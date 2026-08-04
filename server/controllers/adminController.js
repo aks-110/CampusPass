@@ -12,16 +12,16 @@ exports.getPendingUsers = async (req, res) => {
         let pendingList = [];
         
         if (req.user.role === 'Admin') {
-            // Admin approves Staff (Warden, Main Gate)
-            const pendingStaff = await User.findAll({ 
+            // Admin approves Everyone (Warden, Main Gate, Student)
+            const pendingUsers = await User.findAll({ 
                 where: {
-                    role: { [Op.in]: ['Warden', 'Main Gate'] }, 
+                    role: { [Op.in]: ['Warden', 'Main Gate', 'Student'] }, 
                     status: 'Pending'
                 },
                 attributes: { exclude: ['password'] }
             });
             
-            pendingList = await Promise.all(pendingStaff.map(async (u) => {
+            pendingList = await Promise.all(pendingUsers.map(async (u) => {
                 let assignedTo = u.assignedLocation || '';
                 if (u.role === 'Warden') {
                     const warden = await Warden.findOne({ 
@@ -29,6 +29,12 @@ exports.getPendingUsers = async (req, res) => {
                         include: [{ model: Hostel, as: 'hostel', attributes: ['name'] }]
                     });
                     if (warden && warden.hostel) assignedTo = warden.hostel.name;
+                } else if (u.role === 'Student') {
+                    const student = await Student.findOne({ 
+                        where: { userId: u.id },
+                        include: [{ model: Hostel, as: 'hostel', attributes: ['name'] }]
+                    });
+                    if (student && student.hostel) assignedTo = student.hostel.name;
                 }
                 
                 return {
@@ -39,7 +45,7 @@ exports.getPendingUsers = async (req, res) => {
                     photo: u.photo,
                     role: u.role,
                     assignedTo: assignedTo,
-                    isStaff: true
+                    isStaff: u.role !== 'Student'
                 };
             }));
 
