@@ -322,7 +322,7 @@ const StudentDashboard = () => {
               <div className="p-4 bg-gray-50 rounded-xl mb-6 shadow-inner border border-gray-100">
                 {/* QR Code Payload: passId:signature */}
                  <QRCodeSVG 
-                  value={`${selectedQR._id}:${selectedQR.qrToken}`} 
+                  value={`${window.location.origin}/verify-pass?token=${selectedQR._id}:${selectedQR.qrToken}`} 
                   size={200}
                   level="H"
                   includeMargin={true}
