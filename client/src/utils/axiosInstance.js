@@ -26,7 +26,8 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch (err) {
         store.dispatch(logout());
-        window.location.href = '/login';
+        // We removed window.location.href = '/login' here to prevent infinite reload loops.
+        // React Router (MainLayout) will handle the redirect automatically when Redux state changes.
         return Promise.reject(err);
       }
     }
