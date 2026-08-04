@@ -1,7 +1,7 @@
 const express = require('express');
 const { 
     getPendingUsers, approveUser, rejectUser,
-    getAllUsers, updateUserStatus, deleteUser, resetUserPassword, getAuditLogs
+    getAllUsers, updateUserStatus, deleteUser, resetUserPassword, getAuditLogs, createAdmin
 } = require('../controllers/adminController');
 const { protect, authorize } = require('../middlewares/authMiddleware');
 const { logAction } = require('../middlewares/auditMiddleware');
@@ -13,6 +13,7 @@ router.put('/users/:userId/approve', protect, authorize('Admin', 'Warden'), logA
 router.put('/users/:userId/reject', protect, authorize('Admin', 'Warden'), logAction('Rejected User', 'User'), rejectUser);
 
 // User Management Routes
+router.post('/create-admin', protect, authorize('Admin'), logAction('Created Administrator', 'User'), createAdmin);
 router.get('/users', protect, authorize('Admin', 'Warden'), getAllUsers);
 router.get('/audit-logs', protect, authorize('Admin'), getAuditLogs);
 router.put('/users/:userId/status', protect, authorize('Admin', 'Warden'), logAction('Updated User Status', 'User'), updateUserStatus);

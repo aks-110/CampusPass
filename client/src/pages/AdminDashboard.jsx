@@ -14,6 +14,11 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [hostels, setHostels] = useState([]);
   const [roleFilter, setRoleFilter] = useState('All');
+  
+  // Create Admin State
+  const [isCreateAdminOpen, setIsCreateAdminOpen] = useState(false);
+  const [newAdmin, setNewAdmin] = useState({ name: '', email: '', phone: '', password: '' });
+  const [isSubmittingAdmin, setIsSubmittingAdmin] = useState(false);
 
   // Fetch Data based on tab
   const fetchData = async () => {
@@ -72,6 +77,22 @@ const AdminDashboard = () => {
       await axiosInstance.delete(`/admin/users/${userId}`);
       setUsers(users.filter(u => u._id !== userId));
     } catch (err) { alert('Failed to delete user'); }
+  };
+
+  const handleCreateAdmin = async (e) => {
+    e.preventDefault();
+    setIsSubmittingAdmin(true);
+    try {
+      await axiosInstance.post('/admin/create-admin', newAdmin);
+      alert('Administrator created successfully!');
+      setIsCreateAdminOpen(false);
+      setNewAdmin({ name: '', email: '', phone: '', password: '' });
+      fetchData();
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to create admin');
+    } finally {
+      setIsSubmittingAdmin(false);
+    }
   };
 
   return (
@@ -195,17 +216,25 @@ const AdminDashboard = () => {
                <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
                   <div className="p-4 border-b border-border bg-secondary/10 flex justify-between items-center">
                     <h3 className="font-semibold text-lg">System Users</h3>
-                    <select 
-                      value={roleFilter}
-                      onChange={(e) => setRoleFilter(e.target.value)}
-                      className="bg-white border border-border rounded-md px-3 py-1.5 text-sm font-medium text-gray-700 outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer"
-                    >
-                      <option value="All">All Categories</option>
-                      <option value="Student">Students</option>
-                      <option value="Warden">Wardens</option>
-                      <option value="Main Gate">Main Gate Guards</option>
-                      <option value="Admin">Administrators</option>
-                    </select>
+                    <div className="flex gap-3">
+                      <select 
+                        value={roleFilter}
+                        onChange={(e) => setRoleFilter(e.target.value)}
+                        className="bg-white border border-border rounded-md px-3 py-1.5 text-sm font-medium text-gray-700 outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer"
+                      >
+                        <option value="All">All Categories</option>
+                        <option value="Student">Students</option>
+                        <option value="Warden">Wardens</option>
+                        <option value="Main Gate">Main Gate Guards</option>
+                        <option value="Admin">Administrators</option>
+                      </select>
+                      <button 
+                        onClick={() => setIsCreateAdminOpen(true)}
+                        className="bg-primary text-primary-foreground px-4 py-1.5 rounded-md text-sm font-semibold hover:bg-primary/90 transition-all"
+                      >
+                        + Add Admin
+                      </button>
+                    </div>
                   </div>
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm text-left">
@@ -253,6 +282,53 @@ const AdminDashboard = () => {
 
         </AnimatePresence>
       )}
+
+      {/* Create Admin Modal */}
+      <AnimatePresence>
+        {isCreateAdminOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          >
+            <motion.div 
+              initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }}
+              className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden"
+            >
+              <div className="p-4 border-b border-border flex justify-between items-center bg-secondary/10">
+                <h3 className="font-bold text-lg">Create New Administrator</h3>
+                <button onClick={() => setIsCreateAdminOpen(false)} className="text-muted-foreground hover:text-foreground">
+                  <X size={20} />
+                </button>
+              </div>
+              <form onSubmit={handleCreateAdmin} className="p-6 space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-muted-foreground uppercase mb-1">Full Name *</label>
+                  <input required type="text" value={newAdmin.name} onChange={e => setNewAdmin({...newAdmin, name: e.target.value})} className="w-full p-2 border border-border rounded-md text-sm outline-none focus:ring-2 focus:ring-primary/20" placeholder="e.g. John Doe" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-muted-foreground uppercase mb-1">Email Address *</label>
+                  <input required type="email" value={newAdmin.email} onChange={e => setNewAdmin({...newAdmin, email: e.target.value})} className="w-full p-2 border border-border rounded-md text-sm outline-none focus:ring-2 focus:ring-primary/20" placeholder="admin@nith.ac.in" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-muted-foreground uppercase mb-1">Phone Number</label>
+                  <input type="text" value={newAdmin.phone} onChange={e => setNewAdmin({...newAdmin, phone: e.target.value})} className="w-full p-2 border border-border rounded-md text-sm outline-none focus:ring-2 focus:ring-primary/20" placeholder="+91 XXXXX XXXXX" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-muted-foreground uppercase mb-1">Secure Password *</label>
+                  <input required minLength={6} type="password" value={newAdmin.password} onChange={e => setNewAdmin({...newAdmin, password: e.target.value})} className="w-full p-2 border border-border rounded-md text-sm outline-none focus:ring-2 focus:ring-primary/20" placeholder="••••••••" />
+                </div>
+                
+                <div className="pt-4 flex justify-end gap-3">
+                  <button type="button" onClick={() => setIsCreateAdminOpen(false)} className="px-4 py-2 text-sm font-semibold text-muted-foreground hover:bg-secondary/50 rounded-md">Cancel</button>
+                  <button type="submit" disabled={isSubmittingAdmin} className="px-4 py-2 text-sm font-semibold bg-primary text-primary-foreground rounded-md hover:bg-primary/90 disabled:opacity-50">
+                    {isSubmittingAdmin ? 'Creating...' : 'Create Admin Account'}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };

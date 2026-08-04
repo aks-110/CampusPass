@@ -164,6 +164,30 @@ exports.rejectUser = async (req, res) => {
 // USER MANAGEMENT SYSTEM
 // ==========================
 
+exports.createAdmin = async (req, res) => {
+    try {
+        const { name, email, password, phone } = req.body;
+
+        // Check if user exists
+        const userExists = await User.findOne({ where: { email } });
+        if (userExists) return res.status(400).json({ message: 'User already exists' });
+
+        const admin = await User.create({
+            name,
+            email,
+            password,
+            role: 'Admin',
+            phone,
+            status: 'Active' // Admins created by an Admin are instantly active
+        });
+
+        res.status(201).json({ message: 'Administrator created successfully', user: admin });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
 exports.getAllUsers = async (req, res) => {
     try {
         const { role } = req.query;
