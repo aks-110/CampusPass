@@ -63,7 +63,7 @@ const io = new Server(server, {
     }
 });
 
-// Attach Socket.io to the req object so controllers can emit events
+
 app.use((req, res, next) => {
     req.io = io;
     next();
