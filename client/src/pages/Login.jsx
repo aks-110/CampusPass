@@ -144,7 +144,7 @@ const Login = () => {
           </form>
 
           {/* Registration & Forgot Password Footer Links */}
-          <div className="flex justify-between items-center text-xs mt-6 pt-4 border-t border-gray-100">
+          <div className="flex flex-col sm:flex-row justify-between items-center text-xs mt-6 pt-4 border-t border-gray-100 gap-3">
             <Link to="/register" className="font-semibold text-[#1e4479] hover:text-[#0e274b] hover:underline transition-all">
               New Registration
             </Link>

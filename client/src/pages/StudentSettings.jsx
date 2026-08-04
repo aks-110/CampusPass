@@ -21,7 +21,7 @@ const StudentSettings = () => {
       phone: user?.phone || ''
     }
   });
-
+  
   const [passSuccess, setPassSuccess] = useState('');
   const [passError, setPassError] = useState('');
 
@@ -77,7 +77,7 @@ const StudentSettings = () => {
       </div>
 
       {/* Theme Toggling */}
-      <div className="bg-card border border-border rounded-xl p-6 shadow-sm flex items-center justify-between">
+      <div className="bg-card border border-border rounded-xl p-6 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h3 className="font-bold text-foreground">Visual Preference</h3>
           <p className="text-xs text-muted-foreground mt-0.5">Toggle between light mode and dark mode themes.</p>

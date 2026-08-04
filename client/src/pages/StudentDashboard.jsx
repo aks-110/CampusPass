@@ -117,7 +117,7 @@ const StudentDashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
         {/* Stats */}
-        <div className="col-span-1 md:col-span-2 grid grid-cols-3 gap-4">
+        <div className="col-span-1 md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
           {stats.map((stat, i) => (
             <div key={i} className="bg-card border border-border rounded-xl p-4 shadow-sm flex flex-col justify-center items-center text-center gap-2">
               <div className="p-2 bg-secondary/10 rounded-full">{stat.icon}</div>
@@ -250,7 +250,7 @@ const StudentDashboard = () => {
                   <input type="text" placeholder="Where are you going?" className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" {...register('destination', { required: true })} />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Leaving Date</label>
                     <input type="date" className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" {...register('leaveDate', { required: true })} />
@@ -261,7 +261,7 @@ const StudentDashboard = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Return Date</label>
                     <input type="date" className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" {...register('returnDate', { required: true })} />

@@ -45,7 +45,7 @@ const WardenRequests = () => {
         <div className="p-12 text-center text-muted-foreground animate-pulse border border-border rounded-xl bg-card">Loading requests...</div>
       ) : (
         <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
-          <div className="p-4 border-b border-border bg-secondary/10 flex justify-between items-center">
+          <div className="p-4 border-b border-border bg-secondary/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <h3 className="font-semibold text-lg">Pending student applications</h3>
             <span className="bg-primary text-primary-foreground text-xs font-bold px-2.5 py-1 rounded-full">
               {pendingStudents.length} Pending
@@ -118,7 +118,7 @@ const WardenRequests = () => {
               <h3 className="text-xl font-bold text-primary mb-4 border-b border-border pb-2">Verify Student Profile</h3>
 
               <div className="space-y-4 text-sm mb-6">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <p className="text-xs text-muted-foreground font-semibold uppercase">Student Name</p>
                     <p className="font-bold text-foreground mt-0.5">{selectedRequest.name}</p>
@@ -129,7 +129,7 @@ const WardenRequests = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <p className="text-xs text-muted-foreground font-semibold uppercase">Branch</p>
                     <p className="font-bold text-foreground mt-0.5">{selectedRequest.branch}</p>
@@ -140,7 +140,7 @@ const WardenRequests = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <p className="text-xs text-muted-foreground font-semibold uppercase">Hostel Assigned</p>
                     <p className="font-bold text-foreground mt-0.5">{selectedRequest.hostel}</p>
@@ -151,7 +151,7 @@ const WardenRequests = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <p className="text-xs text-muted-foreground font-semibold uppercase">Email</p>
                     <p className="font-bold text-foreground mt-0.5">{selectedRequest.email}</p>
@@ -165,7 +165,7 @@ const WardenRequests = () => {
                 {/* Parent Information Section */}
                 <div className="border-t border-border pt-3">
                   <h4 className="text-xs font-bold text-primary uppercase tracking-wider mb-2">Emergency Contacts</h4>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <p className="text-xs text-muted-foreground font-semibold uppercase">Parent/Guardian</p>
                       <p className="font-bold text-foreground mt-0.5">{selectedRequest.parentName || 'N/A'}</p>
@@ -178,7 +178,7 @@ const WardenRequests = () => {
                 </div>
 
                 {/* Visual Identity & Proof Cards */}
-                <div className="grid grid-cols-2 gap-4 border-t border-border pt-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-border pt-3">
                   {selectedRequest.photo && (
                     <div>
                       <p className="text-xs text-muted-foreground font-semibold uppercase mb-1.5">Profile Picture</p>

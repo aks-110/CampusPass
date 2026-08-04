@@ -170,7 +170,7 @@ const AdminDashboard = () => {
              <motion.div key="approvals" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
                {/* Same table logic as previous AdminDashboard... */}
                <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
-                  <div className="p-4 border-b border-border bg-secondary/10 flex justify-between items-center">
+                  <div className="p-4 border-b border-border bg-secondary/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                     <h3 className="font-semibold text-lg">Staff Account Approvals</h3>
                   </div>
                   {pendingUsers.length === 0 ? (
@@ -214,9 +214,9 @@ const AdminDashboard = () => {
           {activeTab === 'Users' && (
              <motion.div key="users" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
                <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
-                  <div className="p-4 border-b border-border bg-secondary/10 flex justify-between items-center">
+                  <div className="p-4 border-b border-border bg-secondary/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                     <h3 className="font-semibold text-lg">System Users</h3>
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                       <select 
                         value={roleFilter}
                         onChange={(e) => setRoleFilter(e.target.value)}

@@ -157,7 +157,7 @@ const AdminWardens = () => {
 
         {/* Warden Directory */}
         <div className="lg:col-span-2 bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
-          <div className="p-4 border-b border-border bg-secondary/10 flex justify-between items-center">
+          <div className="p-4 border-b border-border bg-secondary/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <h3 className="font-semibold text-lg">Warden Directory</h3>
             <span className="bg-primary text-primary-foreground text-xs font-bold px-2.5 py-1 rounded-full">
               {wardens.length} Wardens

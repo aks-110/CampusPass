@@ -135,7 +135,7 @@ const WardenDashboard = () => {
         
         /* REGISTRATION TAB CONTENT */
         <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
-          <div className="p-4 border-b border-border bg-secondary/10 flex justify-between items-center">
+          <div className="p-4 border-b border-border bg-secondary/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <h3 className="font-semibold text-lg">Pending Student Registrations</h3>
             <div className="flex items-center gap-2">
               {pendingStudents.length > 0 && (
@@ -211,7 +211,7 @@ const WardenDashboard = () => {
 
         /* PASSES TAB CONTENT */
         <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
-          <div className="p-4 border-b border-border bg-secondary/10 flex justify-between items-center">
+          <div className="p-4 border-b border-border bg-secondary/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <h3 className="font-semibold text-lg">Pending Pass Requests</h3>
             <div className="flex items-center gap-2">
               {passes.length > 0 && (

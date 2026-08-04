@@ -139,7 +139,7 @@ const MainGateDashboard = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       
-      <div className="flex justify-between items-end">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div>
           <h2 className="text-3xl font-bold text-primary">Main Gate Checkpoint</h2>
           <p className="text-muted-foreground">{user?.assignedGate} • Live Scanner</p>
@@ -268,7 +268,7 @@ const MainGateDashboard = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                     <div>
                       <p className="text-emerald-600 dark:text-emerald-400 font-bold uppercase text-[10px] tracking-wider">Pass Type</p>
                       <p className="font-semibold text-foreground mt-0.5">{scanResult.passDetails.type}</p>

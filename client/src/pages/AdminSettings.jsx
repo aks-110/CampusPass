@@ -34,7 +34,7 @@ const AdminSettings = () => {
       </div>
 
       {/* Visual Preference Toggle */}
-      <div className="bg-card border border-border p-6 rounded-2xl shadow-sm flex items-center justify-between">
+      <div className="bg-card border border-border p-6 rounded-2xl shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h3 className="font-bold text-foreground">Global Theme Option</h3>
           <p className="text-xs text-muted-foreground mt-0.5">Toggle between light and dark modes.</p>

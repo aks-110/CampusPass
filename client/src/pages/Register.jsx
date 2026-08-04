@@ -217,7 +217,7 @@ const Register = () => {
         <div className="p-6 bg-white">
           
           {/* Role Tabs */}
-          <div className="flex bg-[#fcfdfe] p-1 rounded-md border border-[#d2d6dc] mb-6 shadow-sm">
+          <div className="flex flex-col sm:flex-row gap-2 bg-[#fcfdfe] p-1.5 rounded-lg border border-[#d2d6dc] mb-6 shadow-sm">
             {['Student', 'Warden', 'Main Gate'].map((r) => (
               <button
                 key={r}
@@ -349,7 +349,7 @@ const Register = () => {
             </AnimatePresence>
 
             {/* Navigation / Action Buttons */}
-            <div className="flex gap-4 pt-4 mt-2 border-t border-gray-100">
+            <div className="flex flex-col sm:flex-row gap-3 pt-4 mt-2 border-t border-gray-100">
               {role === 'Student' && step > 1 && (
                 <button
                   type="button"

@@ -40,7 +40,7 @@ const StudentNotifications = () => {
       animate={{ opacity: 1, y: 0 }}
       className="max-w-4xl mx-auto space-y-6"
     >
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
         <div>
           <h2 className="text-3xl font-bold text-primary">Notifications</h2>
           <p className="text-muted-foreground">Stay updated on your pass approvals and scan logs.</p>
@@ -48,7 +48,7 @@ const StudentNotifications = () => {
         {unreadCount > 0 && (
           <button
             onClick={markAllRead}
-            className="text-xs px-3.5 py-2 font-semibold bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground rounded-lg transition-colors shadow-sm"
+            className="text-xs px-3.5 py-2 font-semibold bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground rounded-lg transition-colors shadow-sm self-start sm:self-auto"
           >
             Mark all as read
           </button>

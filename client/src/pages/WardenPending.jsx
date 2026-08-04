@@ -66,7 +66,7 @@ const WardenPending = () => {
         <div className="p-12 text-center text-muted-foreground animate-pulse border border-border rounded-xl bg-card">Loading passes...</div>
       ) : (
         <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
-          <div className="p-4 border-b border-border bg-secondary/10 flex justify-between items-center">
+          <div className="p-4 border-b border-border bg-secondary/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
             <h3 className="font-semibold text-lg">Requests Awaiting Review</h3>
             <span className="bg-amber-500 text-white text-xs font-bold px-2.5 py-1 rounded-full animate-pulse">
               {passes.length} Pending
@@ -141,7 +141,7 @@ const WardenPending = () => {
               <h3 className="text-xl font-bold text-primary mb-4 border-b border-border pb-2">Review Pass Request</h3>
 
               <div className="space-y-4 text-sm mb-6 max-h-[55vh] overflow-y-auto pr-2 custom-scrollbar">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <p className="text-xs text-muted-foreground font-semibold uppercase">Student Name</p>
                     <p className="font-bold text-foreground mt-0.5">{selectedPass.studentId?.name}</p>
@@ -152,7 +152,7 @@ const WardenPending = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <p className="text-xs text-muted-foreground font-semibold uppercase">Hostel & Room</p>
                     <p className="font-bold text-foreground mt-0.5">
@@ -167,7 +167,7 @@ const WardenPending = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <p className="text-xs text-muted-foreground font-semibold uppercase">Student Email</p>
                     <p className="font-bold text-foreground mt-0.5 truncate">{selectedPass.studentId?.email || 'N/A'}</p>
@@ -180,7 +180,7 @@ const WardenPending = () => {
 
                 <div className="border-t border-border/60 pt-3">
                   <p className="text-xs font-bold text-primary mb-2">Emergency & Parent Details</p>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <p className="text-xs text-muted-foreground font-semibold uppercase">Parent Name</p>
                       <p className="font-bold text-foreground mt-0.5">{selectedPass.studentProfile?.parentName || 'N/A'}</p>
@@ -204,7 +204,7 @@ const WardenPending = () => {
 
                 <div className="border-t border-border/60 pt-3">
                   <p className="text-xs font-bold text-primary mb-2">Pass Details</p>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <p className="text-xs text-muted-foreground font-semibold uppercase">Destination</p>
                       <p className="font-bold text-foreground mt-0.5">{selectedPass.destination || 'N/A'}</p>
@@ -214,7 +214,7 @@ const WardenPending = () => {
                       <p className="font-bold text-foreground mt-0.5">{selectedPass.reason || 'N/A'}</p>
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-4 mt-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
                     <div>
                       <p className="text-xs text-muted-foreground font-semibold uppercase">Departure</p>
                       <p className="font-bold text-foreground mt-0.5">{format(new Date(selectedPass.leaveDate), 'dd MMM yyyy, HH:mm')}</p>
@@ -227,7 +227,7 @@ const WardenPending = () => {
                 </div>
 
                 {/* Visual Identity & Proof Cards */}
-                <div className="grid grid-cols-2 gap-4 border-t border-border/60 pt-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-border/60 pt-3">
                   {selectedPass.studentId?.photo && (
                     <div>
                       <p className="text-[10px] text-muted-foreground font-semibold uppercase mb-1">Profile Photo</p>
