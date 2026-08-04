@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { ShieldCheck, ShieldAlert, Clock, ArrowLeft, Landmark, Calendar, CheckCircle2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ShieldCheck, ShieldAlert, Clock, ArrowLeft, Calendar, CheckCircle2, MapPin, Loader2, Fingerprint } from 'lucide-react';
 import axiosInstance from '../utils/axiosInstance';
 import { format } from 'date-fns';
 
@@ -35,177 +35,209 @@ const VerifyPass = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'Approved':
-        return 'bg-emerald-500 text-white border-emerald-600';
+        return 'bg-emerald-50 text-emerald-700 border-emerald-200';
       case 'Completed':
-        return 'bg-blue-600 text-white border-blue-700';
+        return 'bg-blue-50 text-blue-700 border-blue-200';
       case 'Expired':
-        return 'bg-rose-600 text-white border-rose-700';
+        return 'bg-rose-50 text-rose-700 border-rose-200';
       case 'Overdue':
-        return 'bg-amber-600 text-white border-amber-700';
+        return 'bg-yellow-50 text-yellow-700 border-yellow-200';
       default:
-        return 'bg-gray-600 text-white border-gray-700';
+        return 'bg-gray-50 text-gray-700 border-gray-200';
+    }
+  };
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case 'Approved':
+      case 'Completed':
+        return <ShieldCheck className="h-5 w-5" />;
+      case 'Expired':
+      case 'Overdue':
+        return <ShieldAlert className="h-5 w-5" />;
+      default:
+        return <Clock className="h-5 w-5" />;
     }
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center p-4 bg-slate-950 text-slate-100 selection:bg-primary selection:text-white">
-      {/* Brand Header */}
-      <div className="flex items-center gap-2 mb-6">
-        <Landmark className="text-secondary w-8 h-8" />
-        <h1 className="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-          CampusPass <span className="text-secondary">Portal</span>
-        </h1>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl relative"
-      >
-        {/* Verification Status Header Banner */}
+    <div className="w-full max-w-[440px] flex flex-col gap-5 px-4">
+      <AnimatePresence mode="wait">
         {loading ? (
-          <div className="h-2 bg-primary/20 w-full animate-pulse" />
+          <motion.div
+            key="loading"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="w-full bg-white border border-[#d2d6dc] shadow-2xl rounded-lg p-12 flex flex-col items-center justify-center gap-4"
+          >
+            <Loader2 className="h-10 w-10 text-[#1e4479] animate-spin" />
+            <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+              Verifying Pass Integrity...
+            </p>
+          </motion.div>
         ) : error ? (
-          <div className="bg-rose-500/10 border-b border-rose-500/20 text-rose-500 p-4 flex items-center justify-center gap-2 font-bold text-sm">
-            <ShieldAlert size={18} /> Verification Failed
-          </div>
-        ) : (
-          <div className={`p-4 flex items-center justify-center gap-2 font-bold text-sm border-b uppercase tracking-wider ${getStatusColor(passData.passDetails.status)}`}>
-            <ShieldCheck size={18} /> {passData.passDetails.status} Pass Verified
-          </div>
-        )}
-
-        <div className="p-6">
-          {loading ? (
-            <div className="space-y-6 py-6 text-center animate-pulse">
-              <div className="w-20 h-20 bg-slate-800 rounded-full mx-auto" />
-              <div className="h-4 bg-slate-800 rounded w-1/2 mx-auto" />
-              <div className="h-3 bg-slate-800 rounded w-3/4 mx-auto" />
-              <div className="space-y-3 pt-4">
-                <div className="h-3 bg-slate-800 rounded w-5/6 mx-auto" />
-                <div className="h-3 bg-slate-800 rounded w-2/3 mx-auto" />
-              </div>
-            </div>
-          ) : error ? (
-            <div className="text-center py-8 space-y-4">
-              <div className="w-16 h-16 bg-rose-500/10 text-rose-500 rounded-full flex items-center justify-center mx-auto border border-rose-500/20 shadow-inner">
-                <ShieldAlert size={32} />
-              </div>
-              <div className="space-y-1">
-                <h3 className="text-lg font-bold text-slate-100">Invalid QR Code</h3>
-                <p className="text-xs text-slate-400 px-4">{error}</p>
-              </div>
-              <div className="pt-4">
-                <Link to="/login" className="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-lg transition-colors">
-                  <ArrowLeft size={14} /> Back to Login
+          <motion.div
+            key="error"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full bg-white border border-[#d2d6dc] shadow-2xl rounded-lg overflow-hidden"
+          >
+             <div className="bg-[#1e4479] text-white px-6 py-4 flex items-center gap-4 border-b-[3px] border-[#e5a93b]">
+                <div className="p-2 border border-white/30 rounded-full bg-white/10 shrink-0">
+                  <ShieldAlert className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-base font-bold tracking-wide">Verification Failed</h2>
+                  <p className="text-[11px] text-white/80">Security Check</p>
+                </div>
+             </div>
+             
+             <div className="p-6">
+                <div className="mb-6 p-4 text-sm font-semibold text-red-700 bg-red-50 border border-red-200 rounded-lg flex flex-col items-center gap-2 text-center">
+                  <span>{error}</span>
+                </div>
+                
+                <Link
+                  to="/login"
+                  className="w-full py-2.5 bg-white border border-[#d2d6dc] hover:bg-gray-50 text-gray-800 font-semibold rounded-md text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+                >
+                  <ArrowLeft className="h-4 w-4" /> Return to CampusPass
                 </Link>
+             </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="success"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="w-full bg-white border border-[#d2d6dc] shadow-2xl rounded-lg overflow-hidden"
+          >
+            {/* Card Header (NITH Navy Theme) */}
+            <div className="bg-[#1e4479] text-white px-6 py-4 flex items-center justify-between border-b-[3px] border-[#e5a93b]">
+              <div className="flex items-center gap-4">
+                <div className="p-2 border border-white/30 rounded-full bg-white/10 shrink-0">
+                  <Fingerprint className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-base font-bold tracking-wide">Digital Gate Pass</h2>
+                  <p className="text-[11px] text-white/80">Authorized Document</p>
+                </div>
               </div>
             </div>
-          ) : (
-            <div className="space-y-6">
-              {/* Student Identity Card Profile */}
-              <div className="flex items-center gap-4 border-b border-slate-800 pb-5">
-                {passData.student.photo ? (
-                  <img
-                    src={passData.student.photo.startsWith('http') ? passData.student.photo : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${passData.student.photo.replace(/\\/g, '/')}`}
-                    alt={passData.student.name}
-                    className="w-16 h-16 rounded-full object-cover border border-slate-800 shadow-lg shrink-0"
-                  />
-                ) : (
-                  <div className="w-16 h-16 bg-slate-800 text-slate-300 rounded-full flex items-center justify-center font-extrabold text-xl border border-slate-700 shrink-0">
-                    {passData.student.name.charAt(0)}
-                  </div>
-                )}
-                <div className="min-w-0">
-                  <h4 className="text-lg font-extrabold text-white truncate">{passData.student.name}</h4>
-                  <p className="text-xs text-slate-400 font-semibold mt-0.5">{passData.student.rollNumber}</p>
-                  <p className="text-[10px] text-secondary font-bold uppercase mt-0.5">
-                    {passData.student.hostel} • Room {passData.student.room}
+
+            {/* Dynamic Status Banner */}
+            <div className={`px-6 py-3 border-b flex items-center justify-center gap-2 ${getStatusColor(passData.passDetails.status)}`}>
+              {getStatusIcon(passData.passDetails.status)}
+              <span className="font-bold tracking-widest uppercase text-sm">
+                {passData.passDetails.status}
+              </span>
+            </div>
+
+            <div className="p-6">
+              {/* Student Profile Identity */}
+              <div className="flex flex-col items-center text-center mb-6">
+                <div className="relative mb-3">
+                  {passData.student.photo ? (
+                    <img
+                      src={passData.student.photo.startsWith('http') ? passData.student.photo : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${passData.student.photo.replace(/\\/g, '/')}`}
+                      alt={passData.student.name}
+                      className="w-20 h-20 rounded-full object-cover border border-gray-200 shadow-sm"
+                    />
+                  ) : (
+                    <div className="w-20 h-20 bg-[#fcfdfe] border border-[#d2d6dc] text-[#1e4479] rounded-full flex items-center justify-center font-extrabold text-2xl shadow-sm">
+                      {passData.student.name.charAt(0)}
+                    </div>
+                  )}
+                  {/* Status Dot */}
+                  <div className={`absolute bottom-0 right-0 w-5 h-5 rounded-full border-2 border-white ${passData.passDetails.status === 'Approved' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                </div>
+                
+                <h2 className="text-xl font-bold text-gray-900 mb-1">{passData.student.name}</h2>
+                <div className="inline-flex items-center justify-center px-2 py-0.5 bg-gray-100 border border-gray-200 rounded text-[11px] font-bold text-gray-600 tracking-wide">
+                  {passData.student.rollNumber}
+                </div>
+                
+                <p className="text-[11px] text-[#1e4479] font-bold uppercase tracking-widest mt-3 flex items-center gap-1.5">
+                  <MapPin className="h-3 w-3" />
+                  {passData.student.hostel} • Room {passData.student.room}
+                </p>
+              </div>
+
+              <hr className="border-gray-100 mb-6" />
+
+              {/* Pass Specifics Grid */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="col-span-2">
+                  <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1">Destination</p>
+                  <p className="text-sm font-semibold text-gray-800 bg-[#fcfdfe] border border-gray-200 p-2.5 rounded">
+                    {passData.passDetails.destination || 'Not Specified'}
+                  </p>
+                </div>
+                
+                <div>
+                  <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1 flex items-center gap-1">
+                    <Calendar className="h-3 w-3" /> Out Time
+                  </p>
+                  <p className="text-[13px] font-bold text-gray-900">
+                    {format(new Date(passData.passDetails.leaveDate), 'dd MMM, HH:mm')}
+                  </p>
+                </div>
+                
+                <div>
+                  <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-1 flex items-center gap-1">
+                    <Clock className="h-3 w-3" /> Expected In
+                  </p>
+                  <p className="text-[13px] font-bold text-gray-900">
+                    {format(new Date(passData.passDetails.returnDate), 'dd MMM, HH:mm')}
                   </p>
                 </div>
               </div>
 
-              {/* Pass details */}
-              <div className="space-y-4">
-                <div>
-                  <h4 className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Pass Type</h4>
-                  <p className="text-sm font-semibold text-slate-200 mt-1">{passData.passDetails.purpose || 'Gate Pass'}</p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <h4 className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Destination</h4>
-                    <p className="text-sm font-semibold text-slate-200 mt-1 truncate" title={passData.passDetails.destination}>
-                      {passData.passDetails.destination || 'N/A'}
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Status</h4>
-                    <span className="inline-block text-xs font-extrabold uppercase mt-1 px-2.5 py-0.5 rounded-full border border-current bg-slate-900">
-                      {passData.passDetails.status}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 pt-2 border-t border-slate-800/40">
-                  <div>
-                    <h4 className="text-[10px] text-slate-500 font-bold uppercase tracking-wider flex items-center gap-1">
-                      <Calendar size={10} /> Out Date & Time
-                    </h4>
-                    <p className="text-xs font-semibold text-slate-300 mt-1">
-                      {format(new Date(passData.passDetails.leaveDate), 'dd MMM yyyy, HH:mm')}
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="text-[10px] text-slate-500 font-bold uppercase tracking-wider flex items-center gap-1">
-                      <Clock size={10} /> Exp. Return Time
-                    </h4>
-                    <p className="text-xs font-semibold text-slate-300 mt-1">
-                      {format(new Date(passData.passDetails.returnDate), 'dd MMM yyyy, HH:mm')}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Gate Scan Activity Logs (exited/entered) */}
+              {/* Gate Logs */}
               {(passData.passDetails.exitTime || passData.passDetails.entryTime) && (
-                <div className="pt-4 border-t border-slate-800 space-y-3">
-                  <h4 className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Gate Logging History</h4>
-                  <div className="space-y-2.5 text-xs">
-                    {passData.passDetails.exitTime && (
-                      <div className="flex justify-between items-center p-2 rounded bg-slate-950/40 border border-slate-800/30">
-                        <span className="text-slate-400">Exit Recorded {passData.passDetails.exitGate && `(${passData.passDetails.exitGate})`}</span>
-                        <span className="font-mono text-emerald-400">
-                          {format(new Date(passData.passDetails.exitTime), 'dd MMM, HH:mm')}
-                        </span>
+                <div className="mt-6 pt-5 border-t border-gray-100 space-y-2.5">
+                  <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-2 text-center">Security Activity</p>
+                  
+                  {passData.passDetails.exitTime && (
+                    <div className="flex justify-between items-center p-2.5 rounded bg-[#fcfdfe] border border-gray-200">
+                      <div className="flex flex-col">
+                        <span className="text-[10px] font-bold text-gray-500 uppercase">Exit Logged</span>
+                        <span className="text-[10px] text-gray-400">{passData.passDetails.exitGate || 'Main Gate'}</span>
                       </div>
-                    )}
-                    {passData.passDetails.entryTime && (
-                      <div className="flex justify-between items-center p-2 rounded bg-slate-950/40 border border-slate-800/30">
-                        <span className="text-slate-400">Entry Recorded {passData.passDetails.entryGate && `(${passData.passDetails.entryGate})`}</span>
-                        <span className="font-mono text-emerald-400">
-                          {format(new Date(passData.passDetails.entryTime), 'dd MMM, HH:mm')}
-                        </span>
+                      <span className="font-mono text-[11px] font-bold text-emerald-600">
+                        {format(new Date(passData.passDetails.exitTime), 'dd MMM, HH:mm')}
+                      </span>
+                    </div>
+                  )}
+                  
+                  {passData.passDetails.entryTime && (
+                    <div className="flex justify-between items-center p-2.5 rounded bg-[#fcfdfe] border border-gray-200">
+                       <div className="flex flex-col">
+                        <span className="text-[10px] font-bold text-gray-500 uppercase">Entry Logged</span>
+                        <span className="text-[10px] text-gray-400">{passData.passDetails.entryGate || 'Main Gate'}</span>
                       </div>
-                    )}
-                  </div>
+                      <span className="font-mono text-[11px] font-bold text-emerald-600">
+                        {format(new Date(passData.passDetails.entryTime), 'dd MMM, HH:mm')}
+                      </span>
+                    </div>
+                  )}
                 </div>
               )}
-
-              {/* Verification Footer Stamp */}
-              <div className="pt-4 border-t border-slate-800 text-center">
-                <div className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-500/5 text-emerald-400 border border-emerald-500/10 rounded-full text-[10px] font-bold tracking-wider uppercase">
-                  <CheckCircle2 size={12} /> Crypto-Signed & Verified
-                </div>
-                <p className="text-[9px] text-slate-500 mt-2 font-mono break-all leading-relaxed">
-                  PASS_ID: {passData.passDetails.id}
-                </p>
-              </div>
             </div>
-          )}
-        </div>
-      </motion.div>
+
+            {/* Security Footer Stamp */}
+            <div className="p-4 bg-gray-50 border-t border-gray-200 text-center flex flex-col items-center">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 border border-green-200 rounded-full text-[10px] font-bold tracking-widest uppercase mb-2">
+                <CheckCircle2 className="h-3 w-3" /> Authenticity Verified
+              </div>
+              <p className="text-[9px] text-gray-400 font-mono tracking-widest uppercase">
+                ID: {passData.passDetails.id.slice(-8)}
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

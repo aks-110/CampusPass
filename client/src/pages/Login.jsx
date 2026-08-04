@@ -134,8 +134,11 @@ const Login = () => {
             <button 
               disabled={isSubmitting}
               type="submit" 
-              className="w-full mt-3 py-2.5 bg-[#7487a3] hover:bg-[#62758e] text-white font-semibold rounded text-sm transition-all shadow-md active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+              className="w-full mt-3 py-2.5 bg-[#1e4479] hover:bg-[#0e274b] text-white font-semibold rounded-md text-sm transition-all shadow-md hover:shadow-lg active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
             >
+              {isSubmitting ? (
+                <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : null}
               {isSubmitting ? 'Verifying Account...' : 'Login to Portal'}
             </button>
           </form>

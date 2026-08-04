@@ -151,8 +151,11 @@ const ResetPassword = () => {
               <button 
                 disabled={isSubmitting || !token}
                 type="submit" 
-                className="w-full mt-2 py-2.5 bg-[#7487a3] hover:bg-[#62758e] text-white font-semibold rounded text-sm transition-all shadow-md active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                className="w-full mt-3 py-2.5 bg-[#1e4479] hover:bg-[#0e274b] text-white font-semibold rounded-md text-sm transition-all shadow-md hover:shadow-lg active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
               >
+                {isSubmitting ? (
+                  <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : null}
                 {isSubmitting ? 'Resetting Password...' : 'Reset Password'}
               </button>
             </form>
@@ -172,10 +175,10 @@ const ResetPassword = () => {
 
           {/* Footer Back Link */}
           {!success && (
-            <div className="text-center text-xs mt-6 pt-4 border-t border-gray-100">
-              <Link to="/login" className="inline-flex items-center gap-1 font-semibold text-[#1e4479] hover:text-[#0e274b] hover:underline transition-all">
-                <ArrowLeft className="h-3.5 w-3.5" />
-                Back to Sign In
+            <div className="flex justify-center items-center text-xs mt-6 pt-4 border-t border-gray-100">
+              <Link to="/login" className="inline-flex items-center gap-1 font-semibold text-[#1e4479] hover:text-[#0e274b] hover:underline transition-all group">
+                <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-1" />
+                Return to Login
               </Link>
             </div>
           )}

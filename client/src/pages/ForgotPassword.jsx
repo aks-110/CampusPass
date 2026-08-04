@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, ArrowLeft, AlertCircle, CheckCircle } from 'lucide-react';
+import { Mail, AlertCircle, CheckCircle, ArrowLeft, Key } from 'lucide-react';
 import axiosInstance from '../utils/axiosInstance';
 
 const forgotPasswordSchema = z.object({
@@ -17,6 +17,7 @@ const ForgotPassword = () => {
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(forgotPasswordSchema),
+    mode: "onChange"
   });
 
   const onSubmit = async (data) => {
@@ -39,14 +40,14 @@ const ForgotPassword = () => {
         transition={{ duration: 0.5 }}
         className="w-full bg-white border border-[#d2d6dc] shadow-2xl rounded-lg overflow-hidden"
       >
-        {/* Card Header */}
+        {/* Card Header (NITH Navy Theme) */}
         <div className="bg-[#1e4479] text-white px-6 py-4 flex items-center gap-4 border-b-[3px] border-[#e5a93b]">
           <div className="p-2 border border-white/30 rounded-full bg-white/10 shrink-0">
-            <Mail className="h-5 w-5 text-white" />
+            <Key className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h2 className="text-base font-bold tracking-wide">Forgot Password</h2>
-            <p className="text-[11px] text-white/80">Recover your portal password</p>
+            <h2 className="text-base font-bold tracking-wide">Reset Password</h2>
+            <p className="text-[11px] text-white/80">Recover access to your account</p>
           </div>
         </div>
 
@@ -72,7 +73,7 @@ const ForgotPassword = () => {
                 Enter your registered college email address below. We will send you an email with a secure link to reset your account password.
               </p>
 
-              {/* Email Address */}
+              {/* Identifier Input */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wider" htmlFor="email">
                   Registered Email Address *
@@ -85,7 +86,7 @@ const ForgotPassword = () => {
                     id="email"
                     type="email"
                     className="w-full py-2.5 pr-3 text-sm bg-transparent outline-none text-gray-800 placeholder:text-gray-400"
-                    placeholder="Enter your institutional email (e.g. name@nith.ac.in)"
+                    placeholder="Enter your email"
                     {...register('email')}
                   />
                 </div>
@@ -96,32 +97,30 @@ const ForgotPassword = () => {
               <button 
                 disabled={isSubmitting}
                 type="submit" 
-                className="w-full mt-2 py-2.5 bg-[#7487a3] hover:bg-[#62758e] text-white font-semibold rounded text-sm transition-all shadow-md active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                className="w-full mt-3 py-2.5 bg-[#1e4479] hover:bg-[#0e274b] text-white font-semibold rounded-md text-sm transition-all shadow-md hover:shadow-lg active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? 'Sending Request...' : 'Send Reset Link'}
+                {isSubmitting ? (
+                  <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : null}
+                {isSubmitting ? 'Sending Link...' : 'Send Reset Link'}
               </button>
             </form>
           ) : (
-            <div className="text-center py-4">
-              <p className="text-sm text-gray-600 mb-6 leading-relaxed">
-                An email containing password reset instructions has been sent to your registered address. Please check your inbox and spam folders.
-              </p>
+            <div className="py-2">
               <Link
                 to="/login"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold rounded transition-all"
+                className="w-full py-2.5 bg-white border border-[#d2d6dc] hover:bg-gray-50 text-gray-800 font-semibold rounded-md text-sm transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
               >
-                <ArrowLeft className="h-4 w-4" />
-                Back to Sign In
+                <ArrowLeft className="h-4 w-4" /> Back to Sign In
               </Link>
             </div>
           )}
 
-          {/* Footer Back Link */}
           {!success && (
-            <div className="text-center text-xs mt-6 pt-4 border-t border-gray-100">
-              <Link to="/login" className="inline-flex items-center gap-1 font-semibold text-[#1e4479] hover:text-[#0e274b] hover:underline transition-all">
-                <ArrowLeft className="h-3.5 w-3.5" />
-                Back to Sign In
+            <div className="flex justify-center items-center text-xs mt-6 pt-4 border-t border-gray-100">
+              <Link to="/login" className="inline-flex items-center gap-1 font-semibold text-[#1e4479] hover:text-[#0e274b] hover:underline transition-all group">
+                <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-1" />
+                Return to Login
               </Link>
             </div>
           )}

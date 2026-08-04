@@ -103,19 +103,9 @@
     cursor: pointer !important;
   }
   
-  /* Global Fix: Ensure all inputs, selects, and textareas have high contrast text (black/dark grey in light mode, white in dark mode) */
+  /* Adjusted input text colors to ensure visibility while respecting placeholders */
   input, textarea, select {
-    color: hsl(var(--foreground));
-  }
-
-  /* Global Fix: User requested ALL generic text to be black/highly visible. 
-     We override the low-contrast gray classes globally to use the primary foreground color */
-  .text-muted-foreground, 
-  .text-gray-300,
-  .text-gray-400, 
-  .text-gray-500, 
-  .text-gray-600 {
-    color: hsl(var(--foreground)) !important;
+    color: inherit;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -178,3 +168,25 @@ select option {
   color: #ffffff !important;
   background-color: #0f172a !important; /* matches dark slate card bg */
 }
+
+/* Premium Global Animations */
+button, .btn {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.bg-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.bg-card:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+}
+
+.dark .bg-card:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+}
+
