@@ -5,6 +5,7 @@ import { setCredentials, logout, setInitialized } from './redux/authSlice';
 import axiosInstance from './utils/axiosInstance';
 import AuthLayout from './layouts/AuthLayout';
 import MainLayout from './layouts/MainLayout';
+import { Toaster } from 'react-hot-toast';
 
 // Public Pages
 import Login from './pages/Login';
@@ -74,8 +75,34 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
+    <>
+      <Toaster 
+        position="top-center"
+        toastOptions={{
+          className: 'text-sm font-semibold tracking-wide',
+          style: {
+            background: '#ffffff',
+            color: '#1e4479',
+            border: '1px solid #d2d6dc',
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+            borderRadius: '0.5rem',
+          },
+          success: {
+            iconTheme: {
+              primary: '#10b981',
+              secondary: '#ffffff',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: '#ffffff',
+            },
+          },
+        }}
+      />
+      <BrowserRouter>
+        <Routes>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -129,6 +156,7 @@ function App() {
         <Route path="/" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
+    </>
   );
 }
 

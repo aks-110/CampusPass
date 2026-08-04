@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, X, FileText, Phone, MapPin, Calendar, User, Users } from 'lucide-react';
 import axiosInstance from '../utils/axiosInstance';
+import toast from 'react-hot-toast';
 
 const WardenRequests = () => {
   const [pendingStudents, setPendingStudents] = useState([]);
@@ -29,8 +30,9 @@ const WardenRequests = () => {
       await axiosInstance.put(`/admin/users/${userId}/${action}`);
       setPendingStudents(pendingStudents.filter(user => user._id !== userId));
       setSelectedRequest(null);
+      toast.success(`Student ${action}ed successfully`);
     } catch (error) {
-      alert(`Failed to ${action} student.`);
+      toast.error(`Failed to ${action} student.`);
     }
   };
 

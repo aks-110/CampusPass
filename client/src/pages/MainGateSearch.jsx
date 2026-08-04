@@ -3,20 +3,19 @@ import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 import { Search, User, MapPin, ShieldCheck, ShieldAlert, ArrowRightLeft } from 'lucide-react';
 import axiosInstance from '../utils/axiosInstance';
+import toast from 'react-hot-toast';
 
 const MainGateSearch = () => {
   const [query, setQuery] = useState('');
   const [student, setStudent] = useState(null);
   const [passes, setPasses] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
 
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!query) return;
 
     setLoading(true);
-    setError('');
     setStudent(null);
     setPasses([]);
 
@@ -26,7 +25,7 @@ const MainGateSearch = () => {
       setStudent(data.student);
       setPasses(data.passes);
     } catch (err) {
-      setError(err.response?.data?.message || 'No student found matching query.');
+      toast.error(err.response?.data?.message || 'No student found matching query.');
     } finally {
       setLoading(false);
     }
@@ -59,12 +58,6 @@ const MainGateSearch = () => {
           {loading ? 'Searching...' : 'Search'}
         </button>
       </form>
-
-      {error && (
-        <div className="p-4 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-xl">
-          {error}
-        </div>
-      )}
 
       {student && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

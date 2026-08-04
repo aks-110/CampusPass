@@ -4,6 +4,7 @@ import { Check, X, Clock, FileText } from 'lucide-react';
 import axiosInstance from '../utils/axiosInstance';
 import { format } from 'date-fns';
 import { useSocket } from '../context/SocketContext';
+import toast from 'react-hot-toast';
 
 const WardenPending = () => {
   const [passes, setPasses] = useState([]);
@@ -50,8 +51,9 @@ const WardenPending = () => {
       setPasses(passes.filter(p => p._id !== selectedPass._id));
       setSelectedPass(null);
       setRemarks('');
+      toast.success(`Pass ${action}ed successfully`);
     } catch (error) {
-      alert(`Failed to ${action} pass request.`);
+      toast.error(`Failed to ${action} pass request.`);
     }
   };
 

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ShieldCheck, Plus, Trash2, KeyRound, Ban, CheckCircle } from 'lucide-react';
 import axiosInstance from '../utils/axiosInstance';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 const AdminWardens = () => {
   const [wardens, setWardens] = useState([]);
@@ -45,11 +46,11 @@ const AdminWardens = () => {
       // 2. Since register defaults to Pending, Admin automatically approves them
       // We need to find the user ID. The auth register endpoint returns message, but let's see.
       // If register doesn't return the user object directly, we can fetch all users again.
-      alert('Warden registered successfully! They will appear in the pending approvals or list.');
+      toast.success('Warden registered successfully! They will appear in the pending approvals or list.');
       reset();
       fetchData();
     } catch (error) {
-      alert(error.response?.data?.message || 'Failed to create warden account.');
+      toast.error(error.response?.data?.message || 'Failed to create warden account.');
     }
   };
 
@@ -58,8 +59,9 @@ const AdminWardens = () => {
     try {
       await axiosInstance.put(`/admin/users/${userId}/status`, { status: nextStatus });
       setWardens(wardens.map(w => w._id === userId ? { ...w, status: nextStatus } : w));
+      toast.success('Warden status updated');
     } catch (error) {
-      alert('Failed to update warden status');
+      toast.error('Failed to update warden status');
     }
   };
 
@@ -67,9 +69,9 @@ const AdminWardens = () => {
     if (!window.confirm('Reset this warden\'s password and email them a new one?')) return;
     try {
       await axiosInstance.put(`/admin/users/${userId}/reset-password`);
-      alert('Password reset successfully and sent to their email.');
+      toast.success('Password reset successfully and sent to their email.');
     } catch (error) {
-      alert('Failed to reset password');
+      toast.error('Failed to reset password');
     }
   };
 
@@ -78,8 +80,9 @@ const AdminWardens = () => {
     try {
       await axiosInstance.delete(`/admin/users/${userId}`);
       setWardens(wardens.filter(w => w._id !== userId));
+      toast.success('Warden deleted successfully');
     } catch (error) {
-      alert('Failed to delete warden');
+      toast.error('Failed to delete warden');
     }
   };
 

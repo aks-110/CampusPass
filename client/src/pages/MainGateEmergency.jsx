@@ -3,17 +3,12 @@ import { motion } from 'framer-motion';
 import { ShieldAlert, CheckCircle } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import axiosInstance from '../utils/axiosInstance';
+import toast from 'react-hot-toast';
 
 const MainGateEmergency = () => {
   const { register, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm();
-  const [success, setSuccess] = useState('');
-  const [error, setError] = useState('');
-
   const onSubmit = async (data) => {
     try {
-      setError('');
-      setSuccess('');
-      
       const payload = {
         rollNumber: data.rollNumber,
         purpose: data.purpose,
@@ -22,10 +17,10 @@ const MainGateEmergency = () => {
       };
 
       await axiosInstance.post('/gate/emergency', payload);
-      setSuccess(`Emergency Exit successfully logged for student ${data.rollNumber}!`);
+      toast.success(`Emergency Exit successfully logged for student ${data.rollNumber}!`);
       reset();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to submit emergency log. Check Student Roll Number.');
+      toast.error(err.response?.data?.message || 'Failed to submit emergency log. Check Student Roll Number.');
     }
   };
 
@@ -46,18 +41,6 @@ const MainGateEmergency = () => {
             <p className="text-xs text-muted-foreground mt-0.5">Every emergency action is logged instantly to the Admin Audit Logs.</p>
           </div>
         </div>
-
-        {error && (
-          <div className="p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md">
-            {error}
-          </div>
-        )}
-
-        {success && (
-          <div className="p-3 text-sm text-emerald-600 bg-emerald-500/10 border border-emerald-500/20 rounded-md flex gap-2 items-center font-semibold">
-            <CheckCircle size={16} /> {success}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="flex flex-col gap-1.5">

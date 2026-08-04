@@ -7,6 +7,7 @@ import axiosInstance from '../utils/axiosInstance';
 import { QRCodeSVG } from 'qrcode.react';
 import { format } from 'date-fns';
 import { useSocket } from '../context/SocketContext';
+import toast from 'react-hot-toast';
 
 const StudentDashboard = () => {
   const { user } = useSelector((state) => state.auth);
@@ -37,8 +38,9 @@ const StudentDashboard = () => {
     try {
       await axiosInstance.delete(`/pass/${passId}`);
       setPasses(prev => prev.filter(p => p._id !== passId));
+      toast.success('Pass deleted successfully');
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to delete pass');
+      toast.error(err.response?.data?.message || 'Failed to delete pass');
     }
   };
 
@@ -79,8 +81,9 @@ const StudentDashboard = () => {
       setShowApplyModal(false);
       reset();
       fetchPasses();
+      toast.success('Pass requested successfully');
     } catch (error) {
-      alert(error.response?.data?.message || 'Failed to apply for pass');
+      toast.error(error.response?.data?.message || 'Failed to apply for pass');
     }
   };
 

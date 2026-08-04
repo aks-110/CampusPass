@@ -8,6 +8,7 @@ import axiosInstance from '../utils/axiosInstance';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, AlertCircle, ShieldAlert } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const loginSchema = z.object({
   identifier: z.string().min(3, 'Roll Number or Email is required'),
@@ -17,7 +18,6 @@ const loginSchema = z.object({
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
@@ -26,8 +26,6 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      setError('');
-
       dispatch(setLoading(true));
       const response = await axiosInstance.post('/auth/login', data);
       
@@ -42,8 +40,9 @@ const Login = () => {
       else if (role === 'Admin') navigate('/admin');
       else navigate('/');
       
+      toast.success('Login successful!');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to login. Please try again.');
+      toast.error(err.response?.data?.message || 'Failed to login. Please try again.');
     } finally {
       dispatch(setLoading(false));
     }
@@ -71,15 +70,6 @@ const Login = () => {
 
         {/* Card Body */}
         <div className="p-6 bg-white">
-          {error && (
-            <div className="mb-4 p-3 text-xs font-semibold text-red-700 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2">
-              <AlertCircle className="h-4 w-4 shrink-0" />
-              <span>{error}</span>
-            </div>
-          )}
-
-
-
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             {/* Email/Roll No */}
             <div className="flex flex-col gap-1.5">

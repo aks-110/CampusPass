@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Search, Ban, CheckCircle, Users, Download } from 'lucide-react';
 import axiosInstance from '../utils/axiosInstance';
 import * as XLSX from 'xlsx';
+import toast from 'react-hot-toast';
 
 const WardenStudents = () => {
   const [students, setStudents] = useState([]);
@@ -51,8 +52,9 @@ const WardenStudents = () => {
     try {
       await axiosInstance.put(`/admin/users/${userId}/status`, { status: nextStatus });
       setStudents(students.map(u => u._id === userId ? { ...u, status: nextStatus } : u));
+      toast.success(`Student status updated to ${nextStatus}`);
     } catch (error) {
-      alert('Failed to change student status');
+      toast.error('Failed to change student status');
     }
   };
 

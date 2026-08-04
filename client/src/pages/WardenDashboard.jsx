@@ -4,6 +4,7 @@ import { Check, X, Users, Image as ImageIcon, FileText, Download } from 'lucide-
 import { motion, AnimatePresence } from 'framer-motion';
 import { format } from 'date-fns';
 import * as XLSX from 'xlsx';
+import toast from 'react-hot-toast';
 
 const WardenDashboard = () => {
   const [activeTab, setActiveTab] = useState('Registrations'); // Registrations | Passes
@@ -82,8 +83,9 @@ const WardenDashboard = () => {
     try {
       await axiosInstance.put(`/admin/users/${userId}/${action}`);
       setPendingStudents(pendingStudents.filter(user => user._id !== userId));
+      toast.success(`Student ${action}ed successfully`);
     } catch (error) {
-      alert(`Failed to ${action} student.`);
+      toast.error(`Failed to ${action} student.`);
     }
   };
 
@@ -91,8 +93,9 @@ const WardenDashboard = () => {
     try {
       await axiosInstance.put(`/pass/${passId}/${action}`, { remarks: `Automatically ${action} by Warden` });
       setPasses(passes.filter(p => p._id !== passId));
+      toast.success(`Pass ${action}ed successfully`);
     } catch (error) {
-      alert(`Failed to ${action} pass.`);
+      toast.error(`Failed to ${action} pass.`);
     }
   };
 

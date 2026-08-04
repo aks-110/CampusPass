@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { FileText, Download, Calendar, BarChart3, AlertTriangle, Users } from 'lucide-react';
 import axiosInstance from '../utils/axiosInstance';
 import * as XLSX from 'xlsx';
+import toast from 'react-hot-toast';
 
 const AdminReports = () => {
   const [loadingReport, setLoadingReport] = useState('');
@@ -71,10 +72,11 @@ const AdminReports = () => {
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, 'Report Data');
       XLSX.writeFile(workbook, `${filename}_${new Date().toISOString().split('T')[0]}.xlsx`);
+      toast.success('Report downloaded successfully');
 
     } catch (error) {
       console.error('Failed to download report', error);
-      alert('Error downloading report files.');
+      toast.error('Error downloading report files.');
     } finally {
       setLoadingReport('');
     }

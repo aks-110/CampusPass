@@ -3,6 +3,7 @@ import axiosInstance from '../utils/axiosInstance';
 import { Check, X, Users, Building, BarChart3, ShieldAlert, KeyRound, Ban, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import toast from 'react-hot-toast';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('Analytics');
@@ -53,22 +54,24 @@ const AdminDashboard = () => {
     try {
       await axiosInstance.put(`/admin/users/${userId}/${action}`);
       setPendingUsers(pendingUsers.filter(u => u._id !== userId));
-    } catch (err) { alert('Failed to process approval'); }
+      toast.success(`User ${action}ed successfully`);
+    } catch (err) { toast.error('Failed to process approval'); }
   };
 
   const handleUserStatus = async (userId, currentStatus) => {
     try {
       await axiosInstance.put(`/admin/users/${userId}/status`, { isActive: !currentStatus });
       fetchData(); // Refresh list
-    } catch (err) { alert('Failed to update status'); }
+      toast.success('Status updated successfully');
+    } catch (err) { toast.error('Failed to update status'); }
   };
 
   const handlePasswordReset = async (userId) => {
     if (!window.confirm('Are you sure you want to reset this user\'s password?')) return;
     try {
       await axiosInstance.put(`/admin/users/${userId}/reset-password`);
-      alert('Password reset successfully and emailed to user.');
-    } catch (err) { alert('Failed to reset password'); }
+      toast.success('Password reset successfully and emailed to user.');
+    } catch (err) { toast.error('Failed to reset password'); }
   };
 
   const handleDeleteUser = async (userId) => {
@@ -76,7 +79,8 @@ const AdminDashboard = () => {
     try {
       await axiosInstance.delete(`/admin/users/${userId}`);
       setUsers(users.filter(u => u._id !== userId));
-    } catch (err) { alert('Failed to delete user'); }
+      toast.success('User deleted successfully');
+    } catch (err) { toast.error('Failed to delete user'); }
   };
 
   const handleCreateAdmin = async (e) => {
@@ -84,12 +88,12 @@ const AdminDashboard = () => {
     setIsSubmittingAdmin(true);
     try {
       await axiosInstance.post('/admin/create-admin', newAdmin);
-      alert('Administrator created successfully!');
+      toast.success('Administrator created successfully!');
       setIsCreateAdminOpen(false);
       setNewAdmin({ name: '', email: '', phone: '', password: '' });
       fetchData();
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to create admin');
+      toast.error(err.response?.data?.message || 'Failed to create admin');
     } finally {
       setIsSubmittingAdmin(false);
     }

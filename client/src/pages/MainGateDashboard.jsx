@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldCheck, ShieldAlert, LogOut, LogIn, ArrowRight, QrCode } from 'lucide-react';
 import { format } from 'date-fns';
 import { useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
 
 const MainGateDashboard = () => {
   const { user } = useSelector(state => state.auth);
@@ -102,10 +103,10 @@ const MainGateDashboard = () => {
         deviceId: 'WEB_SCANNER_01'
       });
       
-      alert(`Successfully logged ${actionType} for ${scanResult.student.name}`);
+      toast.success(`Successfully logged ${actionType} for ${scanResult.student.name}`);
       resumeScan();
     } catch (error) {
-      alert(error.response?.data?.message || 'Failed to confirm action');
+      toast.error(error.response?.data?.message || 'Failed to confirm action');
     }
   };
 

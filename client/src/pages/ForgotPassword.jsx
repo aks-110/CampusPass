@@ -6,14 +6,14 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, AlertCircle, CheckCircle, ArrowLeft, Key } from 'lucide-react';
 import axiosInstance from '../utils/axiosInstance';
+import toast from 'react-hot-toast';
 
 const forgotPasswordSchema = z.object({
   email: z.string().email('Please enter a valid college email address'),
 });
 
 const ForgotPassword = () => {
-  const [success, setSuccess] = useState('');
-  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(forgotPasswordSchema),
@@ -22,12 +22,12 @@ const ForgotPassword = () => {
 
   const onSubmit = async (data) => {
     try {
-      setError('');
-      setSuccess('');
+      setSuccess(false);
       const response = await axiosInstance.post('/auth/forgot-password', data);
-      setSuccess(response.data.message || 'Password reset link sent successfully! Check your email inbox.');
+      setSuccess(true);
+      toast.success(response.data.message || 'Password reset link sent successfully! Check your email inbox.');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to request password reset. Please try again.');
+      toast.error(err.response?.data?.message || 'Failed to request password reset. Please try again.');
     }
   };
 
@@ -53,20 +53,6 @@ const ForgotPassword = () => {
 
         {/* Card Body */}
         <div className="p-6 bg-white">
-          {error && (
-            <div className="mb-4 p-3 text-xs font-semibold text-red-700 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2">
-              <AlertCircle className="h-4 w-4 shrink-0" />
-              <span>{error}</span>
-            </div>
-          )}
-
-          {success && (
-            <div className="mb-4 p-3 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2">
-              <CheckCircle className="h-4 w-4 shrink-0" />
-              <span>{success}</span>
-            </div>
-          )}
-
           {!success ? (
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
               <p className="text-xs text-gray-500 leading-relaxed mb-1">

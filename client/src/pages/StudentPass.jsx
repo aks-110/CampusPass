@@ -7,13 +7,13 @@ import axiosInstance from '../utils/axiosInstance';
 import { QRCodeSVG } from 'qrcode.react';
 import { format } from 'date-fns';
 import { useSocket } from '../context/SocketContext';
+import toast from 'react-hot-toast';
 
 const StudentPass = () => {
   const { user } = useSelector((state) => state.auth);
   const [activePass, setActivePass] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showApplyModal, setShowApplyModal] = useState(false);
-  const [error, setError] = useState('');
   const { socket } = useSocket();
 
   const { register, handleSubmit, watch, reset, setValue, formState: { errors, isSubmitting } } = useForm();
@@ -41,8 +41,9 @@ const StudentPass = () => {
     try {
       await axiosInstance.delete(`/pass/${passId}`);
       setActivePass(null);
+      toast.success('Pass deleted successfully');
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to delete pass');
+      toast.error(err.response?.data?.message || 'Failed to delete pass');
     }
   };
 
@@ -79,7 +80,6 @@ const StudentPass = () => {
 
   const onSubmit = async (data) => {
     try {
-      setError('');
       const departureDate = new Date(`${data.leaveDate}T${data.leaveTime}`);
       const expectedReturnDate = new Date(`${data.returnDate}T${data.returnTime}`);
 
@@ -87,12 +87,12 @@ const StudentPass = () => {
       // Allow a small 5-minute grace period for current time differences
       now.setMinutes(now.getMinutes() - 5);
       if (departureDate < now) {
-        setError('Departure date and time cannot be in the past.');
+        toast.error('Departure date and time cannot be in the past.');
         return;
       }
 
       if (expectedReturnDate <= departureDate) {
-        setError('Expected return date and time must be after the departure date and time.');
+        toast.error('Expected return date and time must be after the departure date and time.');
         return;
       }
 
@@ -109,8 +109,9 @@ const StudentPass = () => {
       setShowApplyModal(false);
       reset();
       fetchActivePass();
+      toast.success('Pass requested successfully');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to submit gate pass request.');
+      toast.error(err.response?.data?.message || 'Failed to submit gate pass request.');
     }
   };
 
@@ -228,12 +229,12 @@ const StudentPass = () => {
                   <span className="text-xs font-mono font-semibold truncate text-foreground select-all w-[180px] text-left" title={`${activePass._id}:${activePass.qrToken}`}>
                     {activePass._id}:{activePass.qrToken}
                   </span>
-                  <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(`${activePass._id}:${activePass.qrToken}`);
-                      alert('Token copied!');
-                    }}
-                    type="button"
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(`${activePass._id}:${activePass.qrToken}`);
+                        toast.success('Token copied!');
+                      }}
+                      type="button"
                     className="p-1 hover:bg-secondary/20 rounded text-muted-foreground hover:text-foreground transition-colors shrink-0"
                     title="Copy Token"
                   >
@@ -290,12 +291,6 @@ const StudentPass = () => {
               </button>
 
               <h3 className="text-xl font-bold text-primary mb-4 border-b border-border pb-2">New Gate Pass Request</h3>
-
-              {error && (
-                <div className="p-3 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md mb-4">
-                  {error}
-                </div>
-              )}
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="flex flex-col gap-1.5">

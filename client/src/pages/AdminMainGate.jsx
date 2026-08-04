@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ShieldCheck, Plus, Trash2, KeyRound, Ban, CheckCircle } from 'lucide-react';
 import axiosInstance from '../utils/axiosInstance';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 const AdminMainGate = () => {
   const [guards, setGuards] = useState([]);
@@ -37,11 +38,11 @@ const AdminMainGate = () => {
         assignedGate: data.assignedGate
       });
 
-      alert('Main Gate Security registered successfully!');
+      toast.success('Main Gate Security registered successfully!');
       reset();
       fetchData();
     } catch (error) {
-      alert(error.response?.data?.message || 'Failed to create security account.');
+      toast.error(error.response?.data?.message || 'Failed to create security account.');
     }
   };
 
@@ -50,8 +51,9 @@ const AdminMainGate = () => {
     try {
       await axiosInstance.put(`/admin/users/${userId}/status`, { status: nextStatus });
       setGuards(guards.map(g => g._id === userId ? { ...g, status: nextStatus } : g));
+      toast.success('Status updated successfully');
     } catch (error) {
-      alert('Failed to update status');
+      toast.error('Failed to update status');
     }
   };
 
@@ -59,9 +61,9 @@ const AdminMainGate = () => {
     if (!window.confirm('Reset this security account password and email them a new one?')) return;
     try {
       await axiosInstance.put(`/admin/users/${userId}/reset-password`);
-      alert('Password reset successfully and sent to their email.');
+      toast.success('Password reset successfully and sent to their email.');
     } catch (error) {
-      alert('Failed to reset password');
+      toast.error('Failed to reset password');
     }
   };
 
@@ -70,8 +72,9 @@ const AdminMainGate = () => {
     try {
       await axiosInstance.delete(`/admin/users/${userId}`);
       setGuards(guards.filter(g => g._id !== userId));
+      toast.success('Security account deleted successfully');
     } catch (error) {
-      alert('Failed to delete security account');
+      toast.error('Failed to delete security account');
     }
   };
 

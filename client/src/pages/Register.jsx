@@ -10,6 +10,7 @@ import {
   Users, Home, Key, GraduationCap, Image, AlertCircle, ChevronRight, ChevronLeft,
   UserPlus, ShieldCheck, CheckCircle
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const HOSTELS = [
   'Kailash Boys Hostel',
@@ -98,7 +99,6 @@ const Register = () => {
   const navigate = useNavigate();
   const [role, setRole] = useState('Student');
   const [step, setStep] = useState(1);
-  const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [idCardFile, setIdCardFile] = useState(null);
   const [profilePhotoFile, setProfilePhotoFile] = useState(null);
@@ -114,7 +114,6 @@ const Register = () => {
     setRole(newRole);
     setStep(1);
     reset();
-    setError('');
     setIdCardFile(null);
     setProfilePhotoFile(null);
   };
@@ -125,29 +124,38 @@ const Register = () => {
     else if (step === 2) fieldsToValidate = ['rollNumber', 'phone', 'branch', 'year', 'gender'];
     else if (step === 3) {
       fieldsToValidate = ['hostel', 'room'];
-      if (!profilePhotoFile) return setError('Profile Photo is required for student registration');
-      if (!idCardFile) return setError('Student ID Card image is required');
+      if (!profilePhotoFile) {
+        toast.error('Profile Photo is required for student registration');
+        return;
+      }
+      if (!idCardFile) {
+        toast.error('Student ID Card image is required');
+        return;
+      }
     }
     
-    setError('');
     const isStepValid = await trigger(fieldsToValidate);
     if (isStepValid) setStep(prev => prev + 1);
   };
 
   const handleBack = () => {
-    setError('');
     setStep(prev => Math.max(1, prev - 1));
   };
  
   const onSubmit = async (data) => {
     try {
-      setError('');
       let payload;
       let config = {};
  
       if (role === 'Student') {
-        if (!profilePhotoFile) return setError('Profile Photo is required');
-        if (!idCardFile) return setError('ID Card image is required');
+        if (!profilePhotoFile) {
+          toast.error('Profile Photo is required');
+          return;
+        }
+        if (!idCardFile) {
+          toast.error('ID Card image is required');
+          return;
+        }
         
         payload = new FormData();
         Object.keys(data).forEach(key => payload.append(key, data[key]));
@@ -161,9 +169,10 @@ const Register = () => {
  
       await axiosInstance.post('/auth/register', payload, config);
       setSuccess(true);
+      toast.success('Registration successful!');
       setTimeout(() => navigate('/login'), 3500);
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed');
+      toast.error(err.response?.data?.message || 'Registration failed');
     }
   };
 
@@ -249,13 +258,6 @@ const Register = () => {
                   </div>
                 </div>
               ))}
-            </div>
-          )}
-
-          {error && (
-            <div className="mb-6 p-3 text-xs font-semibold text-red-700 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2">
-              <AlertCircle className="h-4 w-4 shrink-0" />
-              <span>{error}</span>
             </div>
           )}
 

@@ -6,6 +6,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, Eye, EyeOff, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
 import axiosInstance from '../utils/axiosInstance';
+import toast from 'react-hot-toast';
 
 const resetPasswordSchema = z.object({
   password: z.string().min(6, 'Password must be at least 6 characters'),
@@ -18,7 +19,7 @@ const resetPasswordSchema = z.object({
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
-  const [success, setSuccess] = useState('');
+  const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -29,18 +30,18 @@ const ResetPassword = () => {
 
   const onSubmit = async (data) => {
     try {
-      setError('');
-      setSuccess('');
+      setSuccess(false);
       if (!token) {
-        setError('Token is missing in the reset URL. Please request a new link.');
+        toast.error('Token is missing in the reset URL. Please request a new link.');
         return;
       }
       const response = await axiosInstance.post(`/auth/reset-password/${token}`, {
         password: data.password
       });
-      setSuccess(response.data.message || 'Password reset successful! You can now log in.');
+      setSuccess(true);
+      toast.success(response.data.message || 'Password reset successful! You can now log in.');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to reset password. The link might be invalid or expired.');
+      toast.error(err.response?.data?.message || 'Failed to reset password. The link might be invalid or expired.');
     }
   };
 
@@ -66,19 +67,6 @@ const ResetPassword = () => {
 
         {/* Card Body */}
         <div className="p-6 bg-white">
-          {error && (
-            <div className="mb-4 p-3 text-xs font-semibold text-red-700 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2">
-              <AlertCircle className="h-4 w-4 shrink-0" />
-              <span>{error}</span>
-            </div>
-          )}
-
-          {success && (
-            <div className="mb-4 p-3 text-xs font-semibold text-green-700 bg-green-50 border border-green-200 rounded-lg flex items-center gap-2">
-              <CheckCircle className="h-4 w-4 shrink-0" />
-              <span>{success}</span>
-            </div>
-          )}
 
           {!token && !success && (
             <div className="mb-4 p-3 text-xs font-semibold text-red-700 bg-red-50 border border-red-200 rounded-lg flex items-center gap-2">

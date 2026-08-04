@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Building, Plus, Trash2, UserPlus, CheckCircle } from 'lucide-react';
 import axiosInstance from '../utils/axiosInstance';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 const AdminHostels = () => {
   const [hostels, setHostels] = useState([]);
@@ -40,8 +41,9 @@ const AdminHostels = () => {
       });
       setHostels([...hostels, res.data.hostel]);
       reset();
+      toast.success('Hostel created successfully');
     } catch (error) {
-      alert('Failed to create hostel');
+      toast.error('Failed to create hostel');
     }
   };
 
@@ -50,8 +52,9 @@ const AdminHostels = () => {
     try {
       await axiosInstance.delete(`/hostels/${hostelId}`);
       setHostels(hostels.filter(h => h._id !== hostelId));
+      toast.success('Hostel deleted successfully');
     } catch (error) {
-      alert('Failed to delete hostel');
+      toast.error('Failed to delete hostel');
     }
   };
 
@@ -63,8 +66,9 @@ const AdminHostels = () => {
       setAssignModal(null);
       setSelectedWarden('');
       fetchData(); // Refresh to populate new warden info
+      toast.success('Warden assigned successfully');
     } catch (error) {
-      alert('Failed to assign warden');
+      toast.error('Failed to assign warden');
     }
   };
 

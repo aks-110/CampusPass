@@ -109,13 +109,11 @@ exports.verifyPass = async (req, res) => {
                 return res.status(400).json({ message: 'Pass has expired' });
             }
         } else if (action === 'Return') {
-            // Allow returning even if marked Expired or Overdue, as long as they checked out
+            // Allow returning even if marked Expired or Overdue
             if (!['Approved', 'Expired', 'Overdue'].includes(pass.status)) {
                 return res.status(400).json({ message: `Pass is currently ${pass.status}` });
             }
-            if (!pass.exitTime) {
-                return res.status(400).json({ message: 'No Exit scan was recorded for this pass.' });
-            }
+            // Removed strict pass.exitTime check to allow syncing missed exit scans
         }
 
         // Location warnings
@@ -123,7 +121,7 @@ exports.verifyPass = async (req, res) => {
         if (action === 'Exit' && studentProfile.currentLocation === 'Outside') {
             locationWarning = 'Missed previous entry scan. Location synced.';
         }
-        if (action === 'Return' && studentProfile.currentLocation === 'Inside') {
+        if (action === 'Return' && (!pass.exitTime || studentProfile.currentLocation === 'Inside')) {
             locationWarning = 'Missed previous exit scan. Location synced.';
         }
 
