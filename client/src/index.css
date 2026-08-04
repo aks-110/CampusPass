@@ -97,6 +97,17 @@
     border-color: hsl(var(--border));
     font-family: 'Inter', sans-serif;
   }
+  
+  /* Global Fix: Make all interactive elements have a hand cursor */
+  button, a, select, summary, [role="button"], input[type="checkbox"], input[type="radio"], label {
+    cursor: pointer !important;
+  }
+  
+  /* Global Fix: Ensure all inputs, selects, and textareas have high contrast text (black/dark grey in light mode, white in dark mode) */
+  input, textarea, select {
+    color: hsl(var(--foreground));
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', sans-serif;
     letter-spacing: -0.02em;
