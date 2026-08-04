@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+@theme {
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --radius: var(--radius);
+}
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 222.2 47.4% 11.2%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+
+    /* NITH Navy Blue */
+    --primary: 215 90% 25%;
+    --primary-foreground: 210 40% 98%;
+
+    /* NITH Gold / Yellow */
+    --secondary: 45 93% 47%;
+    --secondary-foreground: 215 90% 25%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    /* Accent matching secondary for buttons/highlights */
+    --accent: 45 93% 47%;
+    --accent-foreground: 215 90% 25%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 215 90% 25%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    /* NITH Navy Blue adapted for dark mode */
+    --primary: 215 70% 40%;
+    --primary-foreground: 210 40% 98%;
+
+    /* NITH Gold */
+    --secondary: 45 93% 47%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 45 93% 47%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 45 93% 47%;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+    font-family: 'Inter', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.02em;
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    background-image: 
+      radial-gradient(at 0% 0%, hsla(215, 90%, 25%, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(45, 93%, 47%, 0.04) 0px, transparent 50%),
+      radial-gradient(at 50% 100%, hsla(215, 90%, 25%, 0.03) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+}
+
+.dark body {
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(215, 70%, 40%, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, hsla(45, 93%, 47%, 0.05) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, hsla(222, 84%, 4.9%, 0.5) 0px, transparent 50%);
+}
+
+/* Glassmorphism Presets */
+.bg-glass {
+  background-color: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.dark .bg-glass {
+  background-color: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Premium Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.25);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.5);
+}
+
+/* Dropdown Option Colors (Ensuring text is never invisible) */
+select option {
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}
+
+.dark select option {
+  color: #ffffff !important;
+  background-color: #0f172a !important; /* matches dark slate card bg */
+}
