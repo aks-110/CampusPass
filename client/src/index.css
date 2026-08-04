@@ -108,6 +108,16 @@
     color: hsl(var(--foreground));
   }
 
+  /* Global Fix: User requested ALL generic text to be black/highly visible. 
+     We override the low-contrast gray classes globally to use the primary foreground color */
+  .text-muted-foreground, 
+  .text-gray-300,
+  .text-gray-400, 
+  .text-gray-500, 
+  .text-gray-600 {
+    color: hsl(var(--foreground)) !important;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', sans-serif;
     letter-spacing: -0.02em;
