@@ -13,6 +13,7 @@ const AdminDashboard = () => {
   const [pendingUsers, setPendingUsers] = useState([]);
   const [users, setUsers] = useState([]);
   const [hostels, setHostels] = useState([]);
+  const [roleFilter, setRoleFilter] = useState('All');
 
   // Fetch Data based on tab
   const fetchData = async () => {
@@ -194,6 +195,17 @@ const AdminDashboard = () => {
                <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
                   <div className="p-4 border-b border-border bg-secondary/10 flex justify-between items-center">
                     <h3 className="font-semibold text-lg">System Users</h3>
+                    <select 
+                      value={roleFilter}
+                      onChange={(e) => setRoleFilter(e.target.value)}
+                      className="bg-white border border-border rounded-md px-3 py-1.5 text-sm font-medium text-gray-700 outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer"
+                    >
+                      <option value="All">All Categories</option>
+                      <option value="Student">Students</option>
+                      <option value="Warden">Wardens</option>
+                      <option value="Main Gate">Main Gate Guards</option>
+                      <option value="Admin">Administrators</option>
+                    </select>
                   </div>
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm text-left">
@@ -206,7 +218,7 @@ const AdminDashboard = () => {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-border">
-                        {users.map(user => (
+                        {(roleFilter === 'All' ? users : users.filter(u => u.role === roleFilter)).map(user => (
                           <tr key={user._id} className="hover:bg-secondary/5 transition-colors">
                             <td className="px-4 py-3 font-medium">{user.name} <br/><span className="text-xs text-muted-foreground font-normal">{user.email}</span></td>
                             <td className="px-4 py-3 font-semibold text-xs">{user.role}</td>
