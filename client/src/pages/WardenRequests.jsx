@@ -184,7 +184,7 @@ const WardenRequests = () => {
                       <p className="text-xs text-muted-foreground font-semibold uppercase mb-1.5">Profile Picture</p>
                       <div className="rounded-xl overflow-hidden border border-border bg-white h-28 w-full">
                         <img 
-                          src={selectedRequest.photo.startsWith('http') ? selectedRequest.photo : `http://localhost:5000/${selectedRequest.photo.replace(/\\/g, '/')}`} 
+                          src={selectedRequest.photo.startsWith('http') ? selectedRequest.photo : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${selectedRequest.photo.replace(/\\/g, '/')}`} 
                           alt="Student Profile" 
                           className="w-full h-full object-cover" 
                         />
@@ -196,13 +196,13 @@ const WardenRequests = () => {
                     <div>
                       <p className="text-xs text-muted-foreground font-semibold uppercase mb-1.5">Uploaded ID Card</p>
                       <a 
-                        href={selectedRequest.idCard.startsWith('http') ? selectedRequest.idCard : `http://localhost:5000/${selectedRequest.idCard.replace(/\\/g, '/')}`} 
+                        href={selectedRequest.idCard.startsWith('http') ? selectedRequest.idCard : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${selectedRequest.idCard.replace(/\\/g, '/')}`} 
                         target="_blank" 
                         rel="noreferrer"
                         className="block group relative overflow-hidden rounded-xl border border-border cursor-zoom-in h-28 bg-white"
                       >
                         <img 
-                          src={selectedRequest.idCard.startsWith('http') ? selectedRequest.idCard : `http://localhost:5000/${selectedRequest.idCard.replace(/\\/g, '/')}`} 
+                          src={selectedRequest.idCard.startsWith('http') ? selectedRequest.idCard : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${selectedRequest.idCard.replace(/\\/g, '/')}`} 
                           alt="Student ID Card" 
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200" 
                         />

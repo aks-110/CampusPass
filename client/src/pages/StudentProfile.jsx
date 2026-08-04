@@ -33,7 +33,7 @@ const StudentProfile = () => {
           
           <div className="w-24 h-24 rounded-full border-4 border-background overflow-hidden relative z-10 shadow-md mt-4">
             {user?.photo ? (
-              <img src={user.photo.startsWith('http') ? user.photo : `http://localhost:5000/${user.photo.replace(/\\/g, '/')}`} alt="Profile" className="w-full h-full object-cover" />
+              <img src={user.photo.startsWith('http') ? user.photo : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${user.photo.replace(/\\/g, '/')}`} alt="Profile" className="w-full h-full object-cover" />
             ) : (
               <div className="w-full h-full bg-primary/20 flex items-center justify-center text-primary text-3xl font-bold">
                 {user?.name?.charAt(0)}
@@ -95,13 +95,13 @@ const StudentProfile = () => {
             <div className="border-t border-border pt-6 space-y-3">
               <h4 className="text-sm font-bold text-foreground">Verified College ID Card</h4>
               <a 
-                href={user.idCard.startsWith('http') ? user.idCard : `http://localhost:5000/${user.idCard.replace(/\\/g, '/')}`} 
+                href={user.idCard.startsWith('http') ? user.idCard : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${user.idCard.replace(/\\/g, '/')}`} 
                 target="_blank" 
                 rel="noreferrer"
                 className="block max-w-sm rounded-xl overflow-hidden border border-border bg-white cursor-zoom-in group relative"
               >
                 <img 
-                  src={user.idCard.startsWith('http') ? user.idCard : `http://localhost:5000/${user.idCard.replace(/\\/g, '/')}`} 
+                  src={user.idCard.startsWith('http') ? user.idCard : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${user.idCard.replace(/\\/g, '/')}`} 
                   alt="College ID Card" 
                   className="w-full object-cover max-h-44 group-hover:scale-102 transition-transform duration-200" 
                 />

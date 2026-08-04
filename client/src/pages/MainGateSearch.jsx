@@ -72,7 +72,7 @@ const MainGateSearch = () => {
           <div className="bg-card border border-border rounded-2xl p-6 shadow-sm flex flex-col items-center text-center space-y-4">
             <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center text-primary font-extrabold text-2xl border-2 border-primary/20">
               {student.photo ? (
-                <img src={student.photo.startsWith('http') ? student.photo : `http://localhost:5000/${student.photo}`} alt="Profile" className="w-full h-full rounded-full object-cover" />
+                <img src={student.photo.startsWith('http') ? student.photo : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${student.photo}`} alt="Profile" className="w-full h-full rounded-full object-cover" />
               ) : (
                 student.name.charAt(0)
               )}

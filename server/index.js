@@ -35,8 +35,10 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+const allowedOrigin = process.env.FRONTEND_URL || 'http://localhost:5173';
+
 app.use(cors({
-    origin: 'http://localhost:5173', // Update this if your frontend runs on a different port/URL
+    origin: allowedOrigin,
     credentials: true
 }));
 app.use(helmet({
@@ -57,7 +59,7 @@ const { Server } = require('socket.io');
 // Initialize Socket.io
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173", 
+        origin: process.env.FRONTEND_URL || 'http://localhost:5173', 
         methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true
     }

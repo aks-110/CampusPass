@@ -129,7 +129,7 @@ const StudentSettings = () => {
               <div className="flex items-center gap-4">
                 {user?.photo ? (
                   <img 
-                    src={user.photo.startsWith('http') ? user.photo : `http://localhost:5000/${user.photo.replace(/\\/g, '/')}`} 
+                    src={user.photo.startsWith('http') ? user.photo : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${user.photo.replace(/\\/g, '/')}`} 
                     alt="Current Profile" 
                     className="w-16 h-16 rounded-full object-cover border border-border shadow-sm"
                   />

@@ -108,7 +108,7 @@ const VerifyPass = () => {
               <div className="flex items-center gap-4 border-b border-slate-800 pb-5">
                 {passData.student.photo ? (
                   <img
-                    src={passData.student.photo.startsWith('http') ? passData.student.photo : `http://localhost:5000/${passData.student.photo.replace(/\\/g, '/')}`}
+                    src={passData.student.photo.startsWith('http') ? passData.student.photo : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${passData.student.photo.replace(/\\/g, '/')}`}
                     alt={passData.student.name}
                     className="w-16 h-16 rounded-full object-cover border border-slate-800 shadow-lg shrink-0"
                   />

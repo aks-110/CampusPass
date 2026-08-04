@@ -178,7 +178,7 @@ const MainLayout = ({ role }) => {
           <div className="p-4 border-t border-border bg-secondary/10 shrink-0">
             <div className="flex items-center gap-3 mb-4">
               {user?.photo ? (
-                <img src={user.photo.startsWith('http') ? user.photo : `http://localhost:5000/${user.photo}`} alt="Profile" className="w-10 h-10 rounded-full object-cover border-2 border-primary/20" />
+                <img src={user.photo.startsWith('http') ? user.photo : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${user.photo}`} alt="Profile" className="w-10 h-10 rounded-full object-cover border-2 border-primary/20" />
               ) : (
                 <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
                   {user?.name?.charAt(0) || 'U'}

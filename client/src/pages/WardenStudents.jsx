@@ -122,7 +122,7 @@ const WardenStudents = () => {
                     <tr key={student._id} className="hover:bg-secondary/5 transition-colors">
                       <td className="px-6 py-4 font-medium text-foreground flex items-center gap-3">
                         {student.photo ? (
-                          <img src={student.photo.startsWith('http') ? student.photo : `http://localhost:5000/${student.photo.replace(/\\/g, '/')}`} className="w-8 h-8 rounded-full object-cover shadow-sm border border-border" alt="" />
+                          <img src={student.photo.startsWith('http') ? student.photo : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${student.photo.replace(/\\/g, '/')}`} className="w-8 h-8 rounded-full object-cover shadow-sm border border-border" alt="" />
                         ) : (
                           <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs shadow-sm border border-border">
                             {student.name.charAt(0)}

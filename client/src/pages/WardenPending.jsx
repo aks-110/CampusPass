@@ -233,7 +233,7 @@ const WardenPending = () => {
                       <p className="text-[10px] text-muted-foreground font-semibold uppercase mb-1">Profile Photo</p>
                       <div className="rounded-xl overflow-hidden border border-border bg-white h-24 w-full">
                         <img 
-                          src={selectedPass.studentId.photo.startsWith('http') ? selectedPass.studentId.photo : `http://localhost:5000/${selectedPass.studentId.photo.replace(/\\/g, '/')}`} 
+                          src={selectedPass.studentId.photo.startsWith('http') ? selectedPass.studentId.photo : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${selectedPass.studentId.photo.replace(/\\/g, '/')}`} 
                           alt="Student Profile" 
                           className="w-full h-full object-cover" 
                         />
@@ -245,13 +245,13 @@ const WardenPending = () => {
                     <div>
                       <p className="text-[10px] text-muted-foreground font-semibold uppercase mb-1">ID Card Proof</p>
                       <a 
-                        href={selectedPass.studentProfile.idCard.startsWith('http') ? selectedPass.studentProfile.idCard : `http://localhost:5000/${selectedPass.studentProfile.idCard.replace(/\\/g, '/')}`} 
+                        href={selectedPass.studentProfile.idCard.startsWith('http') ? selectedPass.studentProfile.idCard : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${selectedPass.studentProfile.idCard.replace(/\\/g, '/')}`} 
                         target="_blank" 
                         rel="noreferrer"
                         className="block group relative overflow-hidden rounded-xl border border-border cursor-zoom-in h-24 bg-white"
                       >
                         <img 
-                          src={selectedPass.studentProfile.idCard.startsWith('http') ? selectedPass.studentProfile.idCard : `http://localhost:5000/${selectedPass.studentProfile.idCard.replace(/\\/g, '/')}`} 
+                          src={selectedPass.studentProfile.idCard.startsWith('http') ? selectedPass.studentProfile.idCard : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${selectedPass.studentProfile.idCard.replace(/\\/g, '/')}`} 
                           alt="ID Card Proof" 
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200" 
                         />

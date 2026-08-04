@@ -252,7 +252,7 @@ const MainGateDashboard = () => {
                   <div className="flex gap-4 items-center border-b border-border pb-4">
                     {scanResult.student.photo ? (
                       <img 
-                        src={scanResult.student.photo.startsWith('http') ? scanResult.student.photo : `http://localhost:5000/${scanResult.student.photo.replace(/\\/g, '/')}`} 
+                        src={scanResult.student.photo.startsWith('http') ? scanResult.student.photo : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${scanResult.student.photo.replace(/\\/g, '/')}`} 
                         alt="Student" 
                         className="w-16 h-16 rounded-full object-cover border border-border shadow-sm shrink-0" 
                       />
@@ -293,13 +293,13 @@ const MainGateDashboard = () => {
                     <div className="border-t border-border pt-4">
                       <p className="text-emerald-600 dark:text-emerald-400 font-bold uppercase text-[10px] tracking-wider mb-1.5">Verification ID Card Proof</p>
                       <a 
-                        href={scanResult.student.idCard.startsWith('http') ? scanResult.student.idCard : `http://localhost:5000/${scanResult.student.idCard.replace(/\\/g, '/')}`} 
+                        href={scanResult.student.idCard.startsWith('http') ? scanResult.student.idCard : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${scanResult.student.idCard.replace(/\\/g, '/')}`} 
                         target="_blank" 
                         rel="noreferrer"
                         className="block rounded-xl overflow-hidden border border-border bg-background max-h-[90px] cursor-zoom-in group relative"
                       >
                         <img 
-                          src={scanResult.student.idCard.startsWith('http') ? scanResult.student.idCard : `http://localhost:5000/${scanResult.student.idCard.replace(/\\/g, '/')}`} 
+                          src={scanResult.student.idCard.startsWith('http') ? scanResult.student.idCard : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${scanResult.student.idCard.replace(/\\/g, '/')}`} 
                           alt="ID Card Proof" 
                           className="w-full object-cover max-h-[90px] group-hover:scale-102 transition-transform duration-200" 
                         />

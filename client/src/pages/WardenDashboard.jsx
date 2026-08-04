@@ -182,7 +182,7 @@ const WardenDashboard = () => {
                       <td className="px-6 py-4 text-center">
                         {student.idCardUrl ? (
                           <button 
-                            onClick={() => setSelectedIdCard(student.idCardUrl.startsWith('http') ? student.idCardUrl : `http://localhost:5000/${student.idCardUrl.replace(/\\/g, '/')}`)}
+                            onClick={() => setSelectedIdCard(student.idCardUrl.startsWith('http') ? student.idCardUrl : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${student.idCardUrl.replace(/\\/g, '/')}`)}
                             className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground rounded-md transition-colors text-xs font-semibold"
                           >
                             <ImageIcon size={14} /> View ID
