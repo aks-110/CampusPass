@@ -2,8 +2,6 @@ const nodemailer = require('nodemailer');
 
 const sendEmail = async ({ to, subject, text, html }) => {
     try {
-        // In a real app, configure SMTP details here
-        // Using ethereal for dev if no real SMTP provided, or basic config
         let transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST || 'smtp-relay.brevo.com',
             port: parseInt(process.env.SMTP_PORT) || 587,
@@ -25,7 +23,8 @@ const sendEmail = async ({ to, subject, text, html }) => {
         console.log("Message sent: %s", info.messageId);
         return info;
     } catch (error) {
-        console.error("Error sending email:", error);
+        console.error("Error sending email via Nodemailer:", error);
+        throw error; // Throw so BullMQ can catch it and handle retries
     }
 };
 

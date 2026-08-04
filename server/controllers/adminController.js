@@ -1,6 +1,6 @@
 const { User, Student, Warden, Hostel } = require('../models/sql/associations');
 const { Op } = require('sequelize');
-const { sendEmail } = require('../utils/emailService');
+const { emailQueue } = require('../config/queue');
 const AuditLog = require('../models/AuditLog');
 
 // ==========================
@@ -116,7 +116,7 @@ exports.approveUser = async (req, res) => {
         user.status = 'Active';
         await user.save();
 
-        await sendEmail({
+        emailQueue.add('send-email', {
             to: user.email,
             subject: 'CampusPass Account Approved!',
             text: `Dear ${user.name},\n\nYour CampusPass account has been approved. You can now log in.\n\nRegards,\nCampusPass Admin`
@@ -147,7 +147,7 @@ exports.rejectUser = async (req, res) => {
         user.status = 'Rejected';
         await user.save();
 
-        await sendEmail({
+        emailQueue.add('send-email', {
             to: user.email,
             subject: 'CampusPass Account Rejected',
             text: `Dear ${user.name},\n\nYour CampusPass account registration was rejected. Please contact administration for details.\n\nRegards,\nCampusPass Admin`
@@ -293,7 +293,7 @@ exports.resetUserPassword = async (req, res) => {
         user.password = tempPassword; 
         await user.save(); // password hashes automatically by model hook
 
-        await sendEmail({
+        emailQueue.add('send-email', {
             to: user.email,
             subject: 'CampusPass Password Reset',
             text: `Dear ${user.name},\n\nYour password has been reset by the Administrator.\nYour new temporary password is: ${tempPassword}\n\nPlease log in and change this immediately.\n\nRegards,\nCampusPass Admin`

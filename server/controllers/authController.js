@@ -3,7 +3,7 @@ const { Op } = require('sequelize');
 const jwt = require('jsonwebtoken');
 const { uploadToCloudinary } = require('../utils/cloudinary');
 const crypto = require('crypto');
-const { sendEmail } = require('../utils/emailService');
+const { emailQueue } = require('../config/queue');
 
 const generateTokens = (user) => {
     const accessToken = jwt.sign(
@@ -355,7 +355,7 @@ exports.forgotPassword = async (req, res) => {
             </div>
         `;
 
-        await sendEmail({
+        emailQueue.add('send-email', {
             to: user.email,
             subject: 'CampusPass Password Reset Request',
             html: message,
