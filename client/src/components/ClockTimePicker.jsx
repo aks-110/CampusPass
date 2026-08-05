@@ -87,7 +87,7 @@ const ClockTimePicker = ({ value, onChange, label = 'Select Time' }) => {
           exit={{ opacity: 0, scale: 0.5 }}
           onClick={() => mode === 'hours' ? handleHourSelect(val) : handleMinuteSelect(val)}
           className={`absolute flex items-center justify-center w-9 h-9 rounded-full text-sm font-medium transition-colors z-10
-            ${isSelected ? 'bg-primary text-primary-foreground' : 'text-foreground hover:bg-secondary'}
+            ${isSelected ? 'bg-primary text-primary-foreground' : 'text-foreground hover:bg-muted'}
           `}
           style={{
             transform: `translate(calc(${x}px - 50%), calc(${y}px - 50%))`,
@@ -131,7 +131,7 @@ const ClockTimePicker = ({ value, onChange, label = 'Select Time' }) => {
 
       <AnimatePresence>
         {isOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -175,7 +175,7 @@ const ClockTimePicker = ({ value, onChange, label = 'Select Time' }) => {
 
               {/* Clock Face Section */}
               <div className="flex-1 flex items-center justify-center p-8 bg-card relative">
-                <div className="w-[240px] h-[240px] rounded-full bg-secondary/50 relative flex items-center justify-center">
+                <div className="w-[240px] h-[240px] rounded-full bg-muted relative flex items-center justify-center">
                   
                   {/* Center Dot */}
                   <div className="w-2 h-2 rounded-full bg-primary absolute z-20" />
