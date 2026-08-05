@@ -107,8 +107,16 @@ const MainGateEmergency = () => {
                 onClick={(e) => e.target.showPicker && e.target.showPicker()}
                 onFocus={(e) => e.target.showPicker && e.target.showPicker()}
                 className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-rose-500 focus:ring-1 focus:ring-rose-500 outline-none transition-all cursor-pointer hover:bg-rose-500/5 text-foreground scheme-dark" 
-                {...register('returnTime')} 
+                {...register('returnTime', {
+                  validate: value => {
+                    if (returnDateVal === getLocalTodayDate() && value && value < getLocalCurrentTime()) {
+                      return 'Return time cannot be in the past';
+                    }
+                    return true;
+                  }
+                })} 
               />
+              {errors.returnTime && <span className="text-xs text-destructive">{errors.returnTime.message}</span>}
             </div>
           </div>
 

@@ -297,8 +297,17 @@ const StudentDashboard = () => {
                       onClick={(e) => e.target.showPicker && e.target.showPicker()}
                       onFocus={(e) => e.target.showPicker && e.target.showPicker()}
                       className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer hover:bg-secondary/5 text-foreground scheme-dark" 
-                      {...register('leaveTime', { required: true })} 
+                      {...register('leaveTime', { 
+                        required: 'Leave time is required',
+                        validate: value => {
+                          if (leaveDateVal === getLocalTodayDate() && value < getLocalCurrentTime()) {
+                            return 'Time cannot be in the past';
+                          }
+                          return true;
+                        }
+                      })} 
                     />
+                    {errors.leaveTime && <p className="text-red-500 text-xs mt-1">{errors.leaveTime.message}</p>}
                   </div>
                 </div>
 
@@ -315,8 +324,18 @@ const StudentDashboard = () => {
                       onClick={(e) => e.target.showPicker && e.target.showPicker()}
                       onFocus={(e) => e.target.showPicker && e.target.showPicker()}
                       className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer hover:bg-secondary/5 text-foreground scheme-dark" 
-                      {...register('returnTime', { required: true })} 
+                      {...register('returnTime', { 
+                        required: 'Return time is required',
+                        validate: value => {
+                          const minTime = getMinReturnTime();
+                          if (minTime && value < minTime) {
+                            return 'Invalid return time';
+                          }
+                          return true;
+                        }
+                      })} 
                     />
+                    {errors.returnTime && <p className="text-red-500 text-xs mt-1">{errors.returnTime.message}</p>}
                   </div>
                 </div>
 
