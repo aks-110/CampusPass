@@ -8,6 +8,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import { format } from 'date-fns';
 import { useSocket } from '../context/SocketContext';
 import toast from 'react-hot-toast';
+import ClockTimePicker from '../components/ClockTimePicker';
 
 const StudentDashboard = () => {
   const { user } = useSelector((state) => state.auth);
@@ -36,6 +37,8 @@ const StudentDashboard = () => {
     }
   });
   const selectedPassType = watch('passType');
+  const leaveTimeVal = watch('leaveTime');
+  const returnTimeVal = watch('returnTime');
 
   const hasActivePass = passes.some(p => ['Pending', 'Approved'].includes(p.status));
 
@@ -277,7 +280,12 @@ const StudentDashboard = () => {
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Time</label>
-                    <input type="time" min={watch('leaveDate') === getLocalTodayDate() ? getLocalCurrentTime() : undefined} className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" {...register('leaveTime', { required: true })} />
+                    <input type="hidden" {...register('leaveTime', { required: true })} />
+                    <ClockTimePicker 
+                      value={leaveTimeVal} 
+                      onChange={(val) => setValue('leaveTime', val, { shouldValidate: true })} 
+                      label="Select Leave Time" 
+                    />
                   </div>
                 </div>
 
@@ -288,7 +296,12 @@ const StudentDashboard = () => {
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Time</label>
-                    <input type="time" min={watch('leaveDate') === watch('returnDate') ? watch('leaveTime') : (watch('returnDate') === getLocalTodayDate() ? getLocalCurrentTime() : undefined)} className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" {...register('returnTime', { required: true })} />
+                    <input type="hidden" {...register('returnTime', { required: true })} />
+                    <ClockTimePicker 
+                      value={returnTimeVal} 
+                      onChange={(val) => setValue('returnTime', val, { shouldValidate: true })} 
+                      label="Select Return Time" 
+                    />
                   </div>
                 </div>
 
