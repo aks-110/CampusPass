@@ -210,7 +210,7 @@ exports.confirmPass = async (req, res) => {
         const actionText = action === 'Exit' ? 'checked out (exited)' : 'checked in (returned)';
 
         // Queue student notification email
-        await emailQueue.add('send-email', {
+        emailQueue.add('send-email', {
             to: studentEmail,
             subject: emailSubject,
             html: `
@@ -228,12 +228,13 @@ exports.confirmPass = async (req, res) => {
                     <p style="font-size: 14px; color: #777; margin-top: 30px;">Regards,<br/><strong>CampusPass Admin</strong></p>
                 </div>
             </div>
-            `
-        });
+            `,
+            text: `Dear ${studentName},\n\nThis is to confirm that you successfully ${actionText} campus through the gate.\nGate: ${gate}\nTime: ${timeStr}\n\nRegards,\nCampusPass Admin`
+        }).catch(err => console.error('Failed to queue student email:', err));
 
         // Queue parent notification email
         if (parentEmail) {
-            await emailQueue.add('send-email', {
+            emailQueue.add('send-email', {
                 to: parentEmail,
                 subject: emailSubject,
                 html: `
@@ -251,8 +252,9 @@ exports.confirmPass = async (req, res) => {
                         <p style="font-size: 14px; color: #777; margin-top: 30px;">Regards,<br/><strong>CampusPass Admin</strong></p>
                     </div>
                 </div>
-                `
-            });
+                `,
+                text: `Dear ${parentName},\n\nThis is to notify you that your ward, ${studentName}, has successfully ${actionText} through the campus gate.\nGate: ${gate}\nTime: ${timeStr}\n\nRegards,\nCampusPass Admin`
+            }).catch(err => console.error('Failed to queue parent email:', err));
         }
 
         // Evict pass cache from Redis
