@@ -8,7 +8,6 @@ import { QRCodeSVG } from 'qrcode.react';
 import { format } from 'date-fns';
 import { useSocket } from '../context/SocketContext';
 import toast from 'react-hot-toast';
-import ClockTimePicker from '../components/ClockTimePicker';
 
 const StudentDashboard = () => {
   const { user } = useSelector((state) => state.auth);
@@ -280,11 +279,12 @@ const StudentDashboard = () => {
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Time</label>
-                    <input type="hidden" {...register('leaveTime', { required: true })} />
-                    <ClockTimePicker 
-                      value={leaveTimeVal} 
-                      onChange={(val) => setValue('leaveTime', val, { shouldValidate: true })} 
-                      label="Select Leave Time" 
+                    <input 
+                      type="time" 
+                      onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                      onFocus={(e) => e.target.showPicker && e.target.showPicker()}
+                      className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer hover:bg-secondary/5 text-foreground scheme-dark" 
+                      {...register('leaveTime', { required: true })} 
                     />
                   </div>
                 </div>
@@ -296,11 +296,12 @@ const StudentDashboard = () => {
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Time</label>
-                    <input type="hidden" {...register('returnTime', { required: true })} />
-                    <ClockTimePicker 
-                      value={returnTimeVal} 
-                      onChange={(val) => setValue('returnTime', val, { shouldValidate: true })} 
-                      label="Select Return Time" 
+                    <input 
+                      type="time" 
+                      onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                      onFocus={(e) => e.target.showPicker && e.target.showPicker()}
+                      className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer hover:bg-secondary/5 text-foreground scheme-dark" 
+                      {...register('returnTime', { required: true })} 
                     />
                   </div>
                 </div>

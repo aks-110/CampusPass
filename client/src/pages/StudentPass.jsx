@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FilePlus, QrCode as QrIcon, Clock, ShieldCheck, MapPin, X, Copy, Check } from 'lucide-react';
-import ClockTimePicker from '../components/ClockTimePicker';
 import { useForm } from 'react-hook-form';
 import axiosInstance from '../utils/axiosInstance';
 import { QRCodeSVG } from 'qrcode.react';
@@ -339,16 +338,17 @@ const StudentPass = () => {
                       {...register('leaveDate', { required: true })} 
                     />
                   </div>
-                  <div>
-                      <label className="text-xs font-semibold text-foreground/80 mb-1.5 block">Leave Time</label>
-                      <input type="hidden" {...register('leaveTime', { required: true })} />
-                      <ClockTimePicker 
-                        value={leaveTimeVal} 
-                        onChange={(val) => setValue('leaveTime', val, { shouldValidate: true })} 
-                        label="Select Leave Time" 
-                      />
-                      {errors.leaveTime && <p className="text-red-500 text-xs mt-1">Leave time is required</p>}
-                    </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Leave Time</label>
+                    <input 
+                      type="time" 
+                      onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                      onFocus={(e) => e.target.showPicker && e.target.showPicker()}
+                      className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer hover:bg-secondary/5 text-foreground scheme-dark" 
+                      {...register('leaveTime', { required: true })} 
+                    />
+                    {errors.leaveTime && <p className="text-red-500 text-xs mt-1">Leave time is required</p>}
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -365,11 +365,12 @@ const StudentPass = () => {
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Return Time</label>
-                    <input type="hidden" {...register('returnTime', { required: true })} />
-                    <ClockTimePicker 
-                      value={returnTimeVal} 
-                      onChange={(val) => setValue('returnTime', val, { shouldValidate: true })} 
-                      label="Select Return Time" 
+                    <input 
+                      type="time" 
+                      onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                      onFocus={(e) => e.target.showPicker && e.target.showPicker()}
+                      className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer hover:bg-secondary/5 text-foreground scheme-dark" 
+                      {...register('returnTime', { required: true })} 
                     />
                     {errors.returnTime && <p className="text-red-500 text-xs mt-1">Return time is required</p>}
                   </div>

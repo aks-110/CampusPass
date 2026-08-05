@@ -4,11 +4,9 @@ import { ShieldAlert, CheckCircle } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import axiosInstance from '../utils/axiosInstance';
 import toast from 'react-hot-toast';
-import ClockTimePicker from '../components/ClockTimePicker';
 
 const MainGateEmergency = () => {
-  const { register, handleSubmit, reset, setValue, watch, formState: { errors, isSubmitting } } = useForm();
-  const returnTimeVal = watch('returnTime');
+  const { register, handleSubmit, reset, watch, formState: { errors, isSubmitting } } = useForm();
   const onSubmit = async (data) => {
     try {
       const payload = {
@@ -89,11 +87,12 @@ const MainGateEmergency = () => {
             </div>
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Return Time</label>
-              <input type="hidden" {...register('returnTime')} />
-              <ClockTimePicker 
-                value={returnTimeVal} 
-                onChange={(val) => setValue('returnTime', val, { shouldValidate: true })} 
-                label="Select Return Time" 
+              <input 
+                type="time" 
+                onClick={(e) => e.target.showPicker && e.target.showPicker()}
+                onFocus={(e) => e.target.showPicker && e.target.showPicker()}
+                className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-rose-500 focus:ring-1 focus:ring-rose-500 outline-none transition-all cursor-pointer hover:bg-rose-500/5 text-foreground scheme-dark" 
+                {...register('returnTime')} 
               />
             </div>
           </div>
