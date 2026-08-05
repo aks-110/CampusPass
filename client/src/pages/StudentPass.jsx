@@ -140,6 +140,16 @@ const StudentPass = () => {
     }
   };
 
+  const getMinReturnTime = () => {
+    if (returnDateVal && leaveDateVal && returnDateVal === leaveDateVal && leaveTimeVal) {
+      return leaveTimeVal;
+    }
+    if (returnDateVal === getLocalTodayDate()) {
+      return getLocalCurrentTime();
+    }
+    return undefined;
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -342,6 +352,7 @@ const StudentPass = () => {
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Leave Time</label>
                     <input 
                       type="time" 
+                      min={leaveDateVal === getLocalTodayDate() ? getLocalCurrentTime() : undefined}
                       onClick={(e) => e.target.showPicker && e.target.showPicker()}
                       onFocus={(e) => e.target.showPicker && e.target.showPicker()}
                       className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer hover:bg-secondary/5 text-foreground scheme-dark" 
@@ -367,6 +378,7 @@ const StudentPass = () => {
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Return Time</label>
                     <input 
                       type="time" 
+                      min={getMinReturnTime()}
                       onClick={(e) => e.target.showPicker && e.target.showPicker()}
                       onFocus={(e) => e.target.showPicker && e.target.showPicker()}
                       className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer hover:bg-secondary/5 text-foreground scheme-dark" 

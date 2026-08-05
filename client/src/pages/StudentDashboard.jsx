@@ -36,7 +36,9 @@ const StudentDashboard = () => {
     }
   });
   const selectedPassType = watch('passType');
+  const leaveDateVal = watch('leaveDate');
   const leaveTimeVal = watch('leaveTime');
+  const returnDateVal = watch('returnDate');
   const returnTimeVal = watch('returnTime');
 
   const hasActivePass = passes.some(p => ['Pending', 'Approved'].includes(p.status));
@@ -116,6 +118,16 @@ const StudentDashboard = () => {
       case 'Completed': return 'bg-blue-100 text-blue-700 border-blue-200';
       default: return 'bg-gray-100 text-gray-700 border-gray-200';
     }
+  };
+
+  const getMinReturnTime = () => {
+    if (returnDateVal && leaveDateVal && returnDateVal === leaveDateVal && leaveTimeVal) {
+      return leaveTimeVal;
+    }
+    if (returnDateVal === getLocalTodayDate()) {
+      return getLocalCurrentTime();
+    }
+    return undefined;
   };
 
   const stats = [
@@ -281,6 +293,7 @@ const StudentDashboard = () => {
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Time</label>
                     <input 
                       type="time" 
+                      min={leaveDateVal === getLocalTodayDate() ? getLocalCurrentTime() : undefined}
                       onClick={(e) => e.target.showPicker && e.target.showPicker()}
                       onFocus={(e) => e.target.showPicker && e.target.showPicker()}
                       className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer hover:bg-secondary/5 text-foreground scheme-dark" 
@@ -298,6 +311,7 @@ const StudentDashboard = () => {
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Time</label>
                     <input 
                       type="time" 
+                      min={getMinReturnTime()}
                       onClick={(e) => e.target.showPicker && e.target.showPicker()}
                       onFocus={(e) => e.target.showPicker && e.target.showPicker()}
                       className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer hover:bg-secondary/5 text-foreground scheme-dark" 

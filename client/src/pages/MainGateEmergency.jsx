@@ -7,6 +7,20 @@ import toast from 'react-hot-toast';
 
 const MainGateEmergency = () => {
   const { register, handleSubmit, reset, watch, formState: { errors, isSubmitting } } = useForm();
+  
+  const returnDateVal = watch('returnDate');
+
+  const getLocalTodayDate = () => {
+    const d = new Date();
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().split('T')[0];
+  };
+  
+  const getLocalCurrentTime = () => {
+    const d = new Date();
+    return d.toTimeString().substring(0, 5);
+  };
+
   const onSubmit = async (data) => {
     try {
       const payload = {
@@ -89,6 +103,7 @@ const MainGateEmergency = () => {
               <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Return Time</label>
               <input 
                 type="time" 
+                min={returnDateVal === getLocalTodayDate() ? getLocalCurrentTime() : undefined}
                 onClick={(e) => e.target.showPicker && e.target.showPicker()}
                 onFocus={(e) => e.target.showPicker && e.target.showPicker()}
                 className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-rose-500 focus:ring-1 focus:ring-rose-500 outline-none transition-all cursor-pointer hover:bg-rose-500/5 text-foreground scheme-dark" 
