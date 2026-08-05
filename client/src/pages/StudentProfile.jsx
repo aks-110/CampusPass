@@ -8,11 +8,12 @@ const StudentProfile = () => {
 
   const detailItems = [
     { icon: <BookOpen className="text-primary" size={18} />, label: 'Branch', value: user?.branch || 'N/A' },
-    { icon: <Calendar className="text-primary" size={18} />, label: 'Year', value: `${user?.year || 'N/A'} Year` },
+    { icon: <Calendar className="text-primary" size={18} />, label: 'Year', value: user?.year ? `${user.year} Year` : 'N/A' },
     { icon: <Building className="text-primary" size={18} />, label: 'Hostel', value: user?.hostel || 'N/A' },
     { icon: <MapPin className="text-primary" size={18} />, label: 'Room No.', value: user?.roomNo || 'N/A' },
     { icon: <Phone className="text-primary" size={18} />, label: 'Phone', value: user?.phone || 'N/A' },
     { icon: <Mail className="text-primary" size={18} />, label: 'Official Email', value: user?.email || 'N/A' },
+    { icon: <Calendar className="text-primary" size={18} />, label: 'Registered On', value: user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A' },
   ];
 
   return (
@@ -53,8 +54,8 @@ const StudentProfile = () => {
             </div>
             <div className="border-r border-border" />
             <div>
-              <p className="font-bold text-primary flex items-center gap-1">
-                <Shield size={14} className="text-emerald-500" /> Active
+              <p className={`font-bold flex items-center gap-1 ${user?.status === 'Suspended' ? 'text-destructive' : 'text-primary'}`}>
+                <Shield size={14} className={user?.status === 'Suspended' ? 'text-destructive' : 'text-emerald-500'} /> {user?.status || 'Active'}
               </p>
               <p className="text-[10px] text-muted-foreground uppercase font-semibold">Status</p>
             </div>
@@ -79,14 +80,18 @@ const StudentProfile = () => {
 
           <div className="border-t border-border pt-6 space-y-4">
             <h4 className="text-sm font-bold text-foreground">Emergency Contacts</h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-4 border border-border rounded-xl bg-background shadow-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="p-4 border border-border rounded-xl bg-background shadow-sm flex flex-col justify-between">
                 <p className="text-[10px] text-muted-foreground uppercase font-bold">Parent/Guardian Name</p>
-                <p className="font-bold text-foreground mt-0.5">{user?.parentName || 'N/A'}</p>
+                <p className="font-bold text-foreground mt-1 text-sm md:text-base break-words">{user?.parentName || 'N/A'}</p>
               </div>
-              <div className="p-4 border border-border rounded-xl bg-background shadow-sm">
-                <p className="text-[10px] text-muted-foreground uppercase font-bold">Emergency Contact Phone</p>
-                <p className="font-bold text-foreground mt-0.5">{user?.parentPhone || 'N/A'}</p>
+              <div className="p-4 border border-border rounded-xl bg-background shadow-sm flex flex-col justify-between">
+                <p className="text-[10px] text-muted-foreground uppercase font-bold">Contact Phone</p>
+                <p className="font-bold text-foreground mt-1 text-sm md:text-base break-words">{user?.parentPhone || 'N/A'}</p>
+              </div>
+              <div className="p-4 border border-border rounded-xl bg-background shadow-sm flex flex-col justify-between sm:col-span-2 md:col-span-1">
+                <p className="text-[10px] text-muted-foreground uppercase font-bold">Parent Email</p>
+                <p className="font-bold text-foreground mt-1 text-sm md:text-base break-words">{user?.parentEmail || 'N/A'}</p>
               </div>
             </div>
           </div>

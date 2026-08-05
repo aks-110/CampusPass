@@ -210,18 +210,48 @@ exports.confirmPass = async (req, res) => {
         const actionText = action === 'Exit' ? 'checked out (exited)' : 'checked in (returned)';
 
         // Queue student notification email
-        await emailQueue.add('sendMailJob', {
+        await emailQueue.add('send-email', {
             to: studentEmail,
             subject: emailSubject,
-            text: `Dear ${studentName},\n\nThis is to confirm that you successfully ${actionText} campus through the gate.\nGate: ${gate}\nTime: ${timeStr}\n\nRegards,\nCampusPass Admin`
+            html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eaeaec; border-radius: 8px; overflow: hidden;">
+                <div style="background-color: ${action === 'Exit' ? '#f59e0b' : '#10b981'}; padding: 20px; text-align: center;">
+                    <h2 style="color: white; margin: 0; font-size: 24px;">CampusPass Alert</h2>
+                </div>
+                <div style="padding: 30px; background-color: #ffffff;">
+                    <p style="font-size: 16px; color: #333;">Dear <strong>${studentName}</strong>,</p>
+                    <p style="font-size: 16px; color: #555; line-height: 1.5;">This is to confirm that you successfully <strong>${actionText}</strong> campus through the gate.</p>
+                    <div style="background-color: #f8fafc; padding: 15px; border-radius: 6px; margin: 20px 0;">
+                        <p style="margin: 5px 0; color: #333;"><strong>Gate:</strong> ${gate}</p>
+                        <p style="margin: 5px 0; color: #333;"><strong>Time:</strong> ${timeStr}</p>
+                    </div>
+                    <p style="font-size: 14px; color: #777; margin-top: 30px;">Regards,<br/><strong>CampusPass Admin</strong></p>
+                </div>
+            </div>
+            `
         });
 
         // Queue parent notification email
         if (parentEmail) {
-            await emailQueue.add('sendMailJob', {
+            await emailQueue.add('send-email', {
                 to: parentEmail,
                 subject: emailSubject,
-                text: `Dear ${parentName},\n\nThis is to notify you that your ward, ${studentName}, has successfully ${actionText} through the campus gate.\nGate: ${gate}\nTime: ${timeStr}\n\nRegards,\nCampusPass Admin`
+                html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eaeaec; border-radius: 8px; overflow: hidden;">
+                    <div style="background-color: ${action === 'Exit' ? '#f59e0b' : '#10b981'}; padding: 20px; text-align: center;">
+                        <h2 style="color: white; margin: 0; font-size: 24px;">CampusPass Alert</h2>
+                    </div>
+                    <div style="padding: 30px; background-color: #ffffff;">
+                        <p style="font-size: 16px; color: #333;">Dear <strong>${parentName}</strong>,</p>
+                        <p style="font-size: 16px; color: #555; line-height: 1.5;">This is to notify you that your ward, <strong>${studentName}</strong>, has successfully <strong>${actionText}</strong> through the campus gate.</p>
+                        <div style="background-color: #f8fafc; padding: 15px; border-radius: 6px; margin: 20px 0;">
+                            <p style="margin: 5px 0; color: #333;"><strong>Gate:</strong> ${gate}</p>
+                            <p style="margin: 5px 0; color: #333;"><strong>Time:</strong> ${timeStr}</p>
+                        </div>
+                        <p style="font-size: 14px; color: #777; margin-top: 30px;">Regards,<br/><strong>CampusPass Admin</strong></p>
+                    </div>
+                </div>
+                `
             });
         }
 
