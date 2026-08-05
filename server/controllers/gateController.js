@@ -45,6 +45,7 @@ exports.verifyPass = async (req, res) => {
                     studentId: studentProfile.userId,
                     status: { [Op.in]: ['Approved', 'Expired', 'Overdue'] }
                 },
+                order: [['createdAt', 'DESC']],
                 include: [{ model: User, as: 'student', attributes: ['id', 'name', 'email', 'photo', 'role'] }]
             });
             if (!activePass) {

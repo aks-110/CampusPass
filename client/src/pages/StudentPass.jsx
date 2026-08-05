@@ -16,7 +16,24 @@ const StudentPass = () => {
   const [showApplyModal, setShowApplyModal] = useState(false);
   const { socket } = useSocket();
 
-  const { register, handleSubmit, watch, reset, setValue, formState: { errors, isSubmitting } } = useForm();
+  const getLocalTodayDate = () => {
+    const d = new Date();
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().split('T')[0];
+  };
+  
+  const getLocalCurrentTime = () => {
+    const d = new Date();
+    return d.toTimeString().substring(0, 5);
+  };
+
+  const { register, handleSubmit, watch, reset, setValue, formState: { errors, isSubmitting } } = useForm({
+    defaultValues: {
+      leaveDate: getLocalTodayDate(),
+      leaveTime: getLocalCurrentTime(),
+      returnDate: getLocalTodayDate(),
+    }
+  });
   const selectedPassType = watch('passType');
   const leaveDateVal = watch('leaveDate');
   const leaveTimeVal = watch('leaveTime');
@@ -308,13 +325,13 @@ const StudentPass = () => {
                   <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Destination</label>
                   <input type="text" placeholder="Where are you going?" className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" {...register('destination', { required: true })} />
                 </div>
-
+                      
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Leaving Date</label>
                     <input 
                       type="date" 
-                      min={new Date().toISOString().split('T')[0]}
+                      min={getLocalTodayDate()}
                       onClick={(e) => e.target.showPicker()}
                       onFocus={(e) => e.target.showPicker()}
                       className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer hover:bg-secondary/5 text-foreground scheme-dark" 
@@ -325,6 +342,7 @@ const StudentPass = () => {
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Leaving Time</label>
                     <input 
                       type="time" 
+                      min={leaveDateVal === getLocalTodayDate() ? getLocalCurrentTime() : undefined}
                       onClick={(e) => e.target.showPicker()}
                       onFocus={(e) => e.target.showPicker()}
                       className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer hover:bg-secondary/5 text-foreground scheme-dark" 
@@ -338,7 +356,7 @@ const StudentPass = () => {
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Return Date</label>
                     <input 
                       type="date" 
-                      min={leaveDateVal || new Date().toISOString().split('T')[0]}
+                      min={leaveDateVal || getLocalTodayDate()}
                       onClick={(e) => e.target.showPicker()}
                       onFocus={(e) => e.target.showPicker()}
                       className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer hover:bg-secondary/5 text-foreground scheme-dark" 
@@ -349,7 +367,7 @@ const StudentPass = () => {
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Return Time</label>
                     <input 
                       type="time" 
-                      min={leaveDateVal === returnDateVal ? leaveTimeVal : undefined}
+                      min={leaveDateVal === returnDateVal ? leaveTimeVal : (returnDateVal === getLocalTodayDate() ? getLocalCurrentTime() : undefined)}
                       onClick={(e) => e.target.showPicker()}
                       onFocus={(e) => e.target.showPicker()}
                       className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all cursor-pointer hover:bg-secondary/5 text-foreground scheme-dark" 

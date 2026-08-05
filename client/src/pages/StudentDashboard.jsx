@@ -17,7 +17,24 @@ const StudentDashboard = () => {
   const [selectedQR, setSelectedQR] = useState(null);
   const { socket } = useSocket();
 
-  const { register, handleSubmit, watch, reset, formState: { errors, isSubmitting } } = useForm();
+  const getLocalTodayDate = () => {
+    const d = new Date();
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().split('T')[0];
+  };
+  
+  const getLocalCurrentTime = () => {
+    const d = new Date();
+    return d.toTimeString().substring(0, 5);
+  };
+
+  const { register, handleSubmit, watch, reset, setValue, formState: { errors, isSubmitting } } = useForm({
+    defaultValues: {
+      leaveDate: getLocalTodayDate(),
+      leaveTime: getLocalCurrentTime(),
+      returnDate: getLocalTodayDate(),
+    }
+  });
   const selectedPassType = watch('passType');
 
   const hasActivePass = passes.some(p => ['Pending', 'Approved'].includes(p.status));
@@ -256,22 +273,22 @@ const StudentDashboard = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Leaving Date</label>
-                    <input type="date" className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" {...register('leaveDate', { required: true })} />
+                    <input type="date" min={getLocalTodayDate()} className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" {...register('leaveDate', { required: true })} />
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Time</label>
-                    <input type="time" className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" {...register('leaveTime', { required: true })} />
+                    <input type="time" min={watch('leaveDate') === getLocalTodayDate() ? getLocalCurrentTime() : undefined} className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" {...register('leaveTime', { required: true })} />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Return Date</label>
-                    <input type="date" className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" {...register('returnDate', { required: true })} />
+                    <input type="date" min={watch('leaveDate') || getLocalTodayDate()} className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" {...register('returnDate', { required: true })} />
                   </div>
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Time</label>
-                    <input type="time" className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" {...register('returnTime', { required: true })} />
+                    <input type="time" min={watch('leaveDate') === watch('returnDate') ? watch('leaveTime') : (watch('returnDate') === getLocalTodayDate() ? getLocalCurrentTime() : undefined)} className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" {...register('returnTime', { required: true })} />
                   </div>
                 </div>
 
