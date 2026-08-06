@@ -56,9 +56,9 @@ const AuthLayout = () => {
           {/* Logo Center */}
           <div className="flex items-center justify-center shrink-0">
             <img 
-              src="/nit_logo.svg" 
+              src="https://res.cloudinary.com/dyoaxu1dc/image/upload/v1786030433/campuspass/c0rt5n02nhwlrra1wyna.jpg" 
               alt="NITH Logo" 
-              className="h-16 w-16 md:h-20 md:w-20 object-contain drop-shadow-md"
+              className="bg-white rounded-full h-16 w-16 md:h-20 md:w-20 object-contain"
               onError={(e) => {
                 e.target.src = "/favicon.svg";
               }}
@@ -90,7 +90,7 @@ const AuthLayout = () => {
       <div 
         className="flex-1 flex items-center justify-center p-4 md:p-8 bg-cover bg-center relative"
         style={{ 
-          backgroundImage: "url('/nith_gate.png')",
+          backgroundImage: "url('https://res.cloudinary.com/dyoaxu1dc/image/upload/v1786031233/campuspass/hgckcdilhtlh2utivtny.jpg')",
           backgroundAttachment: 'fixed'
         }}
       >

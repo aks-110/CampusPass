@@ -11,6 +11,22 @@ import {
   UserPlus, ShieldCheck, CheckCircle
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+const DEPARTMENTS = [
+  'Computer Science & Engineering',
+  'Civil Engineering',
+  'Electrical Engineering',
+  'Mechanical Engineering',
+  'Electronics & Communication Engineering',
+  'Chemical Engineering',
+  'Material Science & Engineering',
+  'Architecture',
+  'Physics & Photonics Science',
+  'Chemistry',
+  'Mathematics & Scientific Computing',
+  'Humanities & Social Sciences',
+  'Management Studies',
+  'Centre For Energy Studies'
+];
 
 const HOSTELS = [
   'Kailash Boys Hostel',
@@ -38,7 +54,7 @@ const schemas = {
     ...baseSchema,
     rollNumber: z.string().min(3, 'Roll Number is required'),
     phone: z.string().min(10, 'Valid Phone Number is required'),
-    branch: z.string().min(2, 'Branch is required'),
+    branch: z.string().min(2, 'Department is required'),
     year: z.string().min(1, 'Year is required'),
     gender: z.enum(['Male', 'Female', 'Other'], { required_error: 'Gender is required' }),
     hostel: z.enum(HOSTELS, { required_error: 'Hostel is required' }),
@@ -294,7 +310,7 @@ const Register = () => {
                   <>
                     <InputField label="Roll Number" icon={BookOpen} name="rollNumber" register={register} error={errors.rollNumber} placeholder="20CS101" />
                     <InputField label="Phone Number" icon={Phone} name="phone" register={register} error={errors.phone} placeholder="9876543210" />
-                    <InputField label="Branch" icon={GraduationCap} name="branch" register={register} error={errors.branch} placeholder="Computer Science" />
+                    <InputField label="Department" icon={GraduationCap} name="branch" register={register} error={errors.branch} options={DEPARTMENTS} />
                     <InputField label="Year of Study" icon={Calendar} name="year" register={register} error={errors.year} options={[{value: '1', label: '1st Year'}, {value: '2', label: '2nd Year'}, {value: '3', label: '3rd Year'}, {value: '4', label: '4th Year'}]} />
                     <InputField label="Gender" icon={Users} name="gender" register={register} error={errors.gender} options={['Male', 'Female', 'Other']} />
                   </>

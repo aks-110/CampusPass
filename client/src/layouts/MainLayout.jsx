@@ -129,9 +129,9 @@ const MainLayout = ({ role }) => {
           {/* Logo Center */}
           <div className="flex items-center justify-center shrink-0">
             <img 
-              src="/nit_logo.svg" 
+              src="https://res.cloudinary.com/dyoaxu1dc/image/upload/v1786030433/campuspass/c0rt5n02nhwlrra1wyna.jpg" 
               alt="NITH Logo" 
-              className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain drop-shadow-sm"
+              className="bg-white rounded-full h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 object-contain"
               onError={(e) => { e.target.src = "/favicon.svg"; }}
             />
           </div>

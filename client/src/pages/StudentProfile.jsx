@@ -7,7 +7,7 @@ const StudentProfile = () => {
   const { user } = useSelector((state) => state.auth);
 
   const detailItems = [
-    { icon: <BookOpen className="text-primary" size={18} />, label: 'Branch', value: user?.branch || 'N/A' },
+    { icon: <BookOpen className="text-primary" size={18} />, label: 'Department', value: user?.branch || 'N/A' },
     { icon: <Calendar className="text-primary" size={18} />, label: 'Year', value: user?.year ? `${user.year} Year` : 'N/A' },
     { icon: <Building className="text-primary" size={18} />, label: 'Hostel', value: user?.hostel || 'N/A' },
     { icon: <MapPin className="text-primary" size={18} />, label: 'Room No.', value: user?.roomNo || 'N/A' },
